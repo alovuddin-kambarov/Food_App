@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_background"
+    tools:context=".ui.registration.VerificationCodeFragment">
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:text="Tasdiqlash kodi"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_25sdp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Biz +99897 277 89 77 raqamiga tasdiqlash kodi yubordik"
+        android:textColor="#979191"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv" />
+
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:gravity="center"
+        android:text="Kodni kiriting"
+        android:textColor="#979191"
+        android:textSize="@dimen/_18sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv2" />
+
+
+    <com.wynsbin.vciv.VerificationCodeInputView
+        android:id="@+id/vciv_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv3"
+        app:vciv_et_background="@drawable/edit_back"
+        app:vciv_et_cursor_color="@color/main_color"
+        app:vciv_et_foucs_background="@drawable/edit_focus_back"
+        app:vciv_et_height="58dp"
+        app:vciv_et_inputType="number"
+        app:vciv_et_number="6"
+        app:vciv_et_text_color="@android:color/black"
+        app:vciv_et_text_size="18sp"
+        app:vciv_et_underline_default_color="@android:color/transparent"
+        app:vciv_et_underline_focus_color="@android:color/transparent"
+        app:vciv_et_underline_height="2dp"
+        app:vciv_et_underline_show="true"
+        app:vciv_et_width="40dp" />
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_220sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_verify_icon"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

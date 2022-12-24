@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Asosiy" />
+    <item
+        android:icon="@drawable/ic_add_to_basket"
+        android:id="@+id/delivery"
+        android:title="Savat" />
+    <item
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:id="@+id/settings"
+        android:title="Sozlamalar" />
+</menu>

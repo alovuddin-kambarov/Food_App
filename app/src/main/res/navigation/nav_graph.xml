@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.uzcoder.foodapp.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.uzcoder.foodapp.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/deliveryFragment"
+        android:name="com.uzcoder.foodapp.ui.DeliveryFragment"
+        android:label="fragment_delivery"
+        tools:layout="@layout/fragment_delivery" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.uzcoder.foodapp.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/burgerFragment"
+        android:name="com.uzcoder.foodapp.ui.BurgerFragment"
+        android:label="fragment_burger"
+        tools:layout="@layout/fragment_burger" />
+    <fragment
+        android:id="@+id/aboutBurgerFragment"
+        android:name="com.uzcoder.foodapp.ui.AboutBurgerFragment"
+        android:label="fragment_about_burger"
+        tools:layout="@layout/fragment_about_burger" />
+    <fragment
+        android:id="@+id/allCattigoriesFragment"
+        android:name="com.uzcoder.foodapp.ui.AllCategoriesFragment"
+        android:label="fragment_all_cattigories"
+        tools:layout="@layout/fragment_all_cattigories" />
+</navigation>

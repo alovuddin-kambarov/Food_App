@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Food App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_your_food_fast_and_free">Taomlarni bepul buyurtma qiling</string>
+    <string name="_200_gr_chicken_cheese_lettuce_tomato">200 gr chicken + cheese Lettuce + tomato</string>
+    <string name="number">(+-- ---) --- -- --</string>
+    <string name="keyingisi">Keyingisi</string>
+    <string name="telefon_raqami">Telefon raqami</string>
+    <string name="telefon_raqamingizni_kiriting_va_biz_sizga_sms_kod_yuboramiz">Telefon raqamingizni kiriting va biz sizga sms kod yuboramiz</string>
+
+    <string-array name="item">
+        <item>Kichik</item>
+        <item>O\'rtacha</item>
+        <item>Katta</item>
+    </string-array>
+
+</resources>
