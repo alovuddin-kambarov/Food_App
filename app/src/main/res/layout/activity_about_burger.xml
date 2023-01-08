@@ -43,16 +43,16 @@
 
         <ImageView
             android:id="@+id/liked"
-            android:padding="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="@dimen/_7sdp"
             android:src="@drawable/ic_add_to_basket" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/likeImage"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="invisible"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/basket_anim" />
@@ -358,7 +358,7 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_15sdp"
-        android:text="Savatga solish"
+        android:text="Buyurtma berish"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sdp"
         app:cornerRadius="@dimen/_13sdp"

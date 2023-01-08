@@ -2,9 +2,9 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/motion"
     android:background="#F4F2F2"
     app:layoutDescription="@xml/fragment_home_scene"
     tools:context=".ui.HomeFragment">
@@ -35,7 +35,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv1" />
 
-    <EditText
+    <TextView
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
@@ -45,9 +45,12 @@
         android:background="@drawable/search_background"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="@dimen/_10sdp"
+        android:gravity="center|left"
         android:hint="Qidirish"
         android:paddingStart="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/tv1" />
+        android:textSize="@dimen/_17sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv1"
+        tools:layout_editor_absoluteX="26dp" />
 
     <TextView
         android:id="@+id/category"

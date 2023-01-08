@@ -10,7 +10,7 @@ class ViewPagerAdapter2(fa: Fragment, var list: List<String>) :
     override fun getItemCount(): Int = list.size
 
     override fun createFragment(position: Int): Fragment {
-        return BurgerFragment(position.toShort())
+        return BurgerFragment(position)
     }
 
 }

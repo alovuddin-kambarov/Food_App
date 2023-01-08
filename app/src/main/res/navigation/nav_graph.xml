@@ -40,4 +40,9 @@
         android:name="com.uzcoder.foodapp.ui.AllCategoriesFragment"
         android:label="fragment_all_cattigories"
         tools:layout="@layout/fragment_all_cattigories" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.uzcoder.foodapp.ui.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

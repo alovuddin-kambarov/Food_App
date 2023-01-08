@@ -18,6 +18,9 @@ interface DatabaseService {
     @Delete
     fun delete(myClass: Burger)
 
+    @Query("DELETE FROM Burger")
+    fun deleteAll()
+
     @Update
     fun update(myClass: Burger): Completable
 

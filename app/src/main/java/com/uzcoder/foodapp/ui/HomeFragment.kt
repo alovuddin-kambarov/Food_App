@@ -34,6 +34,10 @@ class HomeFragment : Fragment() {
 
         loadCategory()
 
+        binding.search.setOnClickListener {
+            findNavController().navigate(R.id.searchFragment)
+        }
+
 
 
         binding.viewpager.adapter = ViewPagerAdapter2(this, categoryList)

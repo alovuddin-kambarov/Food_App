@@ -14,14 +14,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import com.uzcoder.foodapp.R
 import com.uzcoder.foodapp.databinding.ActivityAboutBurgerBinding
 import com.uzcoder.foodapp.models.Burger
+import com.uzcoder.foodapp.room.AppDatabase
 import com.uzcoder.foodapp.utils.MySharedPreference
 import com.vicmikhailau.maskededittext.MaskedEditText
 import com.yy.mobile.rollingtextview.CharOrder.Alphabet
 import com.yy.mobile.rollingtextview.RollingTextView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 
 class AboutBurgerActivity : AppCompatActivity() {
@@ -81,7 +85,7 @@ class AboutBurgerActivity : AppCompatActivity() {
         }
 
         binding.button.setOnClickListener {
-            if (MySharedPreference.phoneNumber!!.isNotBlank()) {
+            if (MySharedPreference.phoneNumber!!.isBlank()) {
                 phone()
             } else {
                 orderGivenSuccess()
@@ -110,6 +114,14 @@ class AboutBurgerActivity : AppCompatActivity() {
                 MySharedPreference.phoneNumber =
                     view.findViewById<MaskedEditText>(R.id.phone2).text.toString()
 
+                dialog.dismiss()
+                Toast.makeText(
+                    this@AboutBurgerActivity,
+                    "Raqam saqlandi!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.dismiss()
+
             } else {
                 Toast.makeText(
                     this@AboutBurgerActivity,
@@ -128,12 +140,27 @@ class AboutBurgerActivity : AppCompatActivity() {
     }
 
     private fun orderGivenSuccess() {
+
+        val database = FirebaseDatabase.getInstance()
+        burger.count = binding.count.getText().toString().toInt()
+        val myRef = database.getReference("foods")
+
+
+        val arrayList = ArrayList<Burger>()
+
+        arrayList.add(burger)
+
+        val toString = myRef.push().key.toString()
+        myRef.child(toString).setValue(burger)
+
+
         val dialog2 = AlertDialog.Builder(this).create()
         val view2 = LayoutInflater.from(this).inflate(R.layout.check_out_dialog, null, false)
         dialog2.setView(view2)
         dialog2.setContentView(view2)
 
 
+        binding.count.setText(burger.count.toString())
 
         dialog2.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog2.show()
@@ -152,12 +179,18 @@ class AboutBurgerActivity : AppCompatActivity() {
                     KeyPath("Shape Layer", "Rectangle", "Fill"),
                     LottieProperty.COLOR
                 ) { if (it.overallProgress < 0.5) Color.GREEN else Color.RED }
+                burger.count = binding.count.getText().toString().toInt()
+                AppDatabase.getInstants(binding.root.context).dao().add(burger).subscribeOn(
+                    Schedulers.io()
+                ).observeOn(AndroidSchedulers.mainThread()).subscribe()
 
             } else {
                 isLiked = !isLiked
                 binding.likeImage.playAnimation()
                 binding.like.visibility = View.VISIBLE
                 //    binding.likeImage.setImageResource(R.drawable.ic_add_to_basket)
+
+
             }
         }
 

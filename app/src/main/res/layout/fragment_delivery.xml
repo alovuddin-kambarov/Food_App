@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    app:layoutDescription="@xml/fragment_delivery_scene"
     tools:context=".ui.DeliveryFragment">
 
     <LinearLayout
         android:id="@+id/need"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <com.airbnb.lottie.LottieAnimationView
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            android:text="Savat hali bom bo'sh"
+            android:text="Savat bom bo'sh :("
             android:textColor="@color/main_color"
             android:textSize="@dimen/_25sdp"
             android:textStyle="bold" />
@@ -55,7 +55,6 @@
         android:id="@+id/lottie"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
-        android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="@id/savat"
         app:layout_constraintLeft_toRightOf="@id/savat"
         app:layout_constraintTop_toTopOf="@id/savat"
@@ -66,14 +65,14 @@
         android:id="@+id/rolling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:shadowDx="10"
         android:shadowDy="10"
         android:shadowRadius="10"
         android:textColor="@color/main_color"
-        android:textSize="@dimen/_35sdp"
+        android:textSize="@dimen/_26sdp"
+
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -100,7 +99,6 @@
         android:text="Buyurma berish"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sdp"
-        app:cornerRadius="@dimen/_13sdp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <View

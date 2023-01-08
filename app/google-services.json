@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "976360446971",
+    "firebase_url": "https://food-app-20adf-default-rtdb.firebaseio.com",
     "project_id": "food-app-20adf",
     "storage_bucket": "food-app-20adf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:976360446971:android:2729e20c9018c04845095e",
+        "mobilesdk_app_id": "1:976360446971:android:21bffbb2481909e045095e",
         "android_client_info": {
-          "package_name": "com.uzcoder.foodapp"
+          "package_name": "com.example.food_app"
         }
       },
       "oauth_client": [
@@ -29,6 +30,57 @@
             {
               "client_id": "976360446971-n6pnjkun945nch66oam1ff1b8s8e286d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "976360446971-sairiovh6gacpp9llrc55uolo5q5uj6q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foodApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976360446971:android:2729e20c9018c04845095e",
+        "android_client_info": {
+          "package_name": "com.uzcoder.foodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976360446971-u5c7bh5ga8b562lbhp8gk5ni8vji6eob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uzcoder.foodapp",
+            "certificate_hash": "793a53c12f08d0cc98926ea498c4220110a1a327"
+          }
+        },
+        {
+          "client_id": "976360446971-n6pnjkun945nch66oam1ff1b8s8e286d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoXMniwcQkl1deeDpqYs-rXpgT5rrLdOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976360446971-n6pnjkun945nch66oam1ff1b8s8e286d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "976360446971-sairiovh6gacpp9llrc55uolo5q5uj6q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foodApp"
+              }
             }
           ]
         }

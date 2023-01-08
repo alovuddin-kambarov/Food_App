@@ -10,7 +10,7 @@
        <KeyFrameSet>
            <KeyAttribute
                motion:motionTarget="@+id/image"
-               motion:framePosition="98"
+               motion:framePosition="100"
                android:alpha="0.2" />
        </KeyFrameSet>
         <OnSwipe motion:touchAnchorId="@+id/nestedScrollView" />

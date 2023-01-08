@@ -15,15 +15,19 @@ class Burger : Serializable {
     var subTitle: String? = null
     var price: String? = null
     var star: String? = null
-    var type: Short? = null
+    var type: Int? = null
+    var count: Int?  = 1
 
+
+    constructor()
     constructor(
         image: String?,
         name: String?,
         subTitle: String?,
         price: String?,
         star: String?,
-        type: Short?
+        type: Int?,
+        count:Int?
     ) {
         this.image = image
         this.name = name
@@ -31,8 +35,8 @@ class Burger : Serializable {
         this.price = price
         this.star = star
         this.type = type
+        this.count = count
     }
 
-    constructor()
 
 }
