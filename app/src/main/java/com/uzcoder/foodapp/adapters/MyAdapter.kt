@@ -33,6 +33,8 @@ class MyAdapter(private var list: List<Burger>, val onClick: OnClick) :
         @SuppressLint("SetTextI18n", "ResourceAsColor")
         fun onBind(item: Burger) {
 
+            var a = 0
+
             binding.name.text = item.name
             binding.ball.text = item.star
             binding.price.text = item.price
@@ -40,13 +42,14 @@ class MyAdapter(private var list: List<Burger>, val onClick: OnClick) :
             Picasso.get().load(item.image).into(binding.image)
 
             binding.addBasket.setOnClickListener {
-                item.count!! + 1
+                a++
 
                 binding.count.visibility = View.VISIBLE
                 binding.minus.visibility = View.VISIBLE
 
-                binding.count.setText(item.count.toString())
+                binding.count.setText(a.toString())
 
+                item.count = a
                 AppDatabase.getInstants(binding.root.context).dao().add(item)
                     .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe()
@@ -57,9 +60,11 @@ class MyAdapter(private var list: List<Burger>, val onClick: OnClick) :
 
             binding.minus.setOnClickListener {
 
-                item.count!! - 1
+                AppDatabase.getInstants(binding.root.context).dao().delete(item)
+                a--
+                binding.count.setText(a.toString())
 
-                if (item.count!! < 1) {
+                if (a < 1) {
                     binding.minus.visibility = View.GONE
                     binding.count.visibility = View.GONE
                 }

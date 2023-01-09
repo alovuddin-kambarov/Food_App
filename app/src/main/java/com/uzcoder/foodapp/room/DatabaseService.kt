@@ -1,6 +1,7 @@
 package com.uzcoder.foodapp.room
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.uzcoder.foodapp.models.Burger
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -12,7 +13,7 @@ interface DatabaseService {
     @Query("select * from Burger")
     fun getAll(): Flowable<List<Burger>>
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     fun add(myClass: Burger): Single<Long>
 
     @Delete

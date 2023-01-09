@@ -1,6 +1,7 @@
 package com.uzcoder.foodapp.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -22,6 +23,8 @@ class MyAdapterBasket :
 
             binding.name.text = burger.name
             binding.ball.text = burger.star
+            binding.count.visibility = View.VISIBLE
+            binding.count.setText(burger.count.toString())
             binding.price.text = burger.price
             binding.subText.text = burger.subTitle
             Picasso.get().load(burger.image).into(binding.image)

@@ -3,15 +3,22 @@ package com.uzcoder.foodapp.ui
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.transition.Transition
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
 import com.google.firebase.database.FirebaseDatabase
@@ -21,11 +28,13 @@ import com.uzcoder.foodapp.databinding.ActivityAboutBurgerBinding
 import com.uzcoder.foodapp.models.Burger
 import com.uzcoder.foodapp.room.AppDatabase
 import com.uzcoder.foodapp.utils.MySharedPreference
+import com.uzcoder.foodapp.viewmodel.ViewModel
 import com.vicmikhailau.maskededittext.MaskedEditText
 import com.yy.mobile.rollingtextview.CharOrder.Alphabet
 import com.yy.mobile.rollingtextview.RollingTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import uz.coder.youtubeapi.retrofit.Status
 
 
 class AboutBurgerActivity : AppCompatActivity() {
@@ -34,14 +43,18 @@ class AboutBurgerActivity : AppCompatActivity() {
 
     var burger = Burger()
     var isLiked = false
+    lateinit var viewModel: ViewModel
+    private var str = ""
     lateinit var binding: ActivityAboutBurgerBinding
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBurgerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this)[ViewModel::class.java]
         burger = intent.getSerializableExtra("burger") as Burger
         burgerPrice = burger.price!!.toInt()
         Picasso.get().load(burger.image).into(binding.image)
@@ -139,7 +152,7 @@ class AboutBurgerActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun orderGivenSuccess() {
+ /*   private fun orderGivenSuccess() {
 
         val database = FirebaseDatabase.getInstance()
         burger.count = binding.count.getText().toString().toInt()
@@ -165,7 +178,113 @@ class AboutBurgerActivity : AppCompatActivity() {
         dialog2.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog2.show()
     }
+*/
 
+    @SuppressLint("CutPasteId", "SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun orderGivenSuccess() {
+
+        var a = 0
+
+
+
+        str = burger.name.toString()
+
+        println("nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: $str ")
+        viewModel.getFoods(
+            binding.root.context,
+            str,
+            MySharedPreference.phoneNumber!!,
+            5,
+            "katta",
+            burgerPrice
+
+        ).observe(this) {
+
+            val dialog2 = AlertDialog.Builder(binding.root.context).create()
+            val view2 = LayoutInflater.from(binding.root.context).inflate(R.layout.check_out_dialog, null, false)
+
+
+            dialog2.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog2.setView(view2)
+            dialog2.setContentView(view2)
+
+            str = ""
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                    dialog2.cancel()
+                    if (it!!.data!!.ok!!) {
+                        view2.findViewById<TextView>(R.id.tv).text =
+                            "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
+                        view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                            .setAnimation(R.raw.check_animation)
+                        str = ""
+                        val db = FirebaseDatabase.getInstance().getReference("foods")
+                        db.child("sys").setValue(System.currentTimeMillis())
+
+
+
+
+                        if (a == 0) {
+                            dialog2.show()
+                        }
+                        a++
+                        //     Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
+
+                        Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.data}")
+
+                        AppDatabase.getInstants(binding.root.context).dao().deleteAll()
+
+
+                    } else {
+                        Toast.makeText(
+                            binding.root.context,
+                            "Something is wrong!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                }
+                Status.LOADING -> {
+
+                    view2.findViewById<TextView>(R.id.tv).text =
+                        "Yuborilmoqda..."
+                    view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                        .setAnimation(R.raw.progress)
+                    view2.findViewById<LottieAnimationView>(R.id.animationViews).loop(true)
+                    if (a == 0) {
+                        dialog2.show()
+                    }
+                    //       Toast.makeText(binding.root.context, "Loading", Toast.LENGTH_SHORT).show()
+
+                }
+                Status.ERROR -> {
+
+                    dialog2.cancel()
+                    view2.findViewById<TextView>(R.id.tv).text =
+                        "Internet bilan bog'liq muammo bor. Iltimos, internetga ulanib, qayta urinib ko'ring!"
+                    view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                        .setAnimation(R.raw.error_cat)
+                    if (a == 0) {
+                        dialog2.show()
+                    }
+                    a++
+                    //       Toast.makeText(binding.root.context, "Error", Toast.LENGTH_SHORT).show()
+                    Log.d(ContentValues.TAG, "OnCreate: error22222 = = = = = ${it.message}")
+                    Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.message}")
+                    println("Error hihi: ${it.message} ")
+
+                }
+
+            }
+
+
+        }
+
+
+    }
     private fun setLiked() {
 
         binding.like.setOnClickListener {
