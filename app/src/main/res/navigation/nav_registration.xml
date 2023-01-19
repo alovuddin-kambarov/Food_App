@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/phoneNumberFragment"
-        android:name="com.uzcoder.foodapp.ui.registration.PhoneNumberFragment"
+        android:name="com.aladdin.foodapp.ui.registration.PhoneNumberFragment"
         android:label="fragment_phone_number"
         tools:layout="@layout/fragment_phone_number" />
     <fragment
         android:id="@+id/verificationCodeFragment"
-        android:name="com.uzcoder.foodapp.ui.registration.VerificationCodeFragment"
+        android:name="com.aladdin.foodapp.ui.registration.VerificationCodeFragment"
         android:label="fragment_verification_code"
         tools:layout="@layout/fragment_verification_code" />
 </navigation>

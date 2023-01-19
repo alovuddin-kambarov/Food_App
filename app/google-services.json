@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:976360446971:android:21bffbb2481909e045095e",
         "android_client_info": {
-          "package_name": "com.example.food_app"
+          "package_name": "com.aladdin.foodaapp"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "976360446971-sairiovh6gacpp9llrc55uolo5q5uj6q.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.foodApp"
+                "bundle_id": "com.aladdin.foodapp"
               }
             }
           ]
@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:976360446971:android:2729e20c9018c04845095e",
         "android_client_info": {
-          "package_name": "com.uzcoder.foodapp"
+          "package_name": "com.aladdin.foodapp"
         }
       },
       "oauth_client": [
@@ -54,7 +54,7 @@
           "client_id": "976360446971-u5c7bh5ga8b562lbhp8gk5ni8vji6eob.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.uzcoder.foodapp",
+            "package_name": "com.aladdin.foodapp",
             "certificate_hash": "793a53c12f08d0cc98926ea498c4220110a1a327"
           }
         },
@@ -79,7 +79,7 @@
               "client_id": "976360446971-sairiovh6gacpp9llrc55uolo5q5uj6q.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.foodApp"
+                "bundle_id": "com.aladdin.foodapp"
               }
             }
           ]

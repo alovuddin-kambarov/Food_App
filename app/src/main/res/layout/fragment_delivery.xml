@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F3F3F3"
     app:layoutDescription="@xml/fragment_delivery_scene"
     tools:context=".ui.DeliveryFragment">
 
@@ -95,11 +96,13 @@
         android:layout_height="@dimen/_55sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:text="Buyurma berish"
         android:textColor="@color/white"
         android:textSize="@dimen/_16sdp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="26dp" />
 
     <View
         android:id="@+id/view2"

@@ -7,42 +7,76 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.uzcoder.foodapp.ui.MainFragment"
+        android:name="com.aladdin.foodapp.ui.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.uzcoder.foodapp.ui.HomeFragment"
+        android:name="com.aladdin.foodapp.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_deliveryFragment"
+            app:destination="@id/deliveryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/deliveryFragment"
-        android:name="com.uzcoder.foodapp.ui.DeliveryFragment"
+        android:name="com.aladdin.foodapp.ui.DeliveryFragment"
         android:label="fragment_delivery"
-        tools:layout="@layout/fragment_delivery" />
+        tools:layout="@layout/fragment_delivery" >
+        <action
+            android:id="@+id/action_deliveryFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_deliveryFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.uzcoder.foodapp.ui.SettingsFragment"
+        android:name="com.aladdin.foodapp.ui.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/burgerFragment"
-        android:name="com.uzcoder.foodapp.ui.BurgerFragment"
+        android:name="com.aladdin.foodapp.ui.BurgerFragment"
         android:label="fragment_burger"
-        tools:layout="@layout/fragment_burger" />
+        tools:layout="@layout/fragment_burger" >
+        <action
+            android:id="@+id/action_burgerFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aboutBurgerFragment"
-        android:name="com.uzcoder.foodapp.ui.AboutBurgerFragment"
+        android:name="com.aladdin.foodapp.ui.OrdersFragment"
         android:label="fragment_about_burger"
-        tools:layout="@layout/fragment_about_burger" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_aboutBurgerFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/allCattigoriesFragment"
-        android:name="com.uzcoder.foodapp.ui.AllCategoriesFragment"
+        android:name="com.aladdin.foodapp.ui.AllCategoriesFragment"
         android:label="fragment_all_cattigories"
-        tools:layout="@layout/fragment_all_cattigories" />
+        tools:layout="@layout/fragment_all_cattigories" >
+        <action
+            android:id="@+id/action_allCattigoriesFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.uzcoder.foodapp.ui.SearchFragment"
+        android:name="com.aladdin.foodapp.ui.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

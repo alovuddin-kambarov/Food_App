@@ -71,6 +71,8 @@
 
             <ImageView
                 android:id="@+id/image"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_100sdp"
                 android:src="@drawable/burger"
@@ -89,7 +91,7 @@
                 android:transitionName="burger_name" />
 
 
-            <TextView
+  <!--          <TextView
                 android:id="@+id/subText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +100,7 @@
                 android:singleLine="true"
                 android:text="@string/_200_gr_chicken_cheese_lettuce_tomato"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp" />-->
 
 
         </LinearLayout>
@@ -122,7 +124,7 @@
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:text="$22.00"
                     android:textColor="@color/main_color"
-                    android:textSize="@dimen/_13sdp"
+                    android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
             </LinearLayout>

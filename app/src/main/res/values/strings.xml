@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food App</string>
+    <string name="app_name">Osh bo\'sin</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_your_food_fast_and_free">Taomlarni bepul buyurtma qiling</string>
@@ -8,6 +8,10 @@
     <string name="keyingisi">Keyingisi</string>
     <string name="telefon_raqami">Telefon raqami</string>
     <string name="telefon_raqamingizni_kiriting_va_biz_sizga_sms_kod_yuboramiz">Telefon raqamingizni kiriting va biz sizga sms kod yuboramiz</string>
+    <string name="wrong">Nimadur xato ketti :( Ehtimol, internet bilan bog\'liq muammo bor. Iltimos, internetga ulanib, qayta urinib ko\'ring!</string>
+    <string name="buyurtmalar">Buyurtmalar</string>
+    <string name="dastur_tilini_tanlang">Dastur tilini tanlang</string>
+    <string name="saqlash">Saqlash</string>
 
     <string-array name="item">
         <item>Kichik</item>

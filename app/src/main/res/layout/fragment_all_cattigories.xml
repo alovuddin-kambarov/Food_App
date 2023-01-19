@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ECE8E8"
     tools:context=".ui.AllCategoriesFragment">
 
     <ImageView
@@ -42,4 +41,32 @@
         app:layout_constraintTop_toBottomOf="@id/back"
         app:spanCount="2"
         tools:listitem="@layout/category_item" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViews"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/error_cat" />
+
+    <TextView
+        android:id="@+id/tv_internet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:gravity="center"
+        android:text="@string/wrong"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animationViews" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.uzcoder.foodapp"
+        applicationId "com.aladdin.foodapp"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -88,5 +88,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
 
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }
