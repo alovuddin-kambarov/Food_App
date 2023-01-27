@@ -14,5 +14,6 @@ class Repository(var apiService: ApiService) {
 
     suspend fun getCategory() = apiService.getCategory()
     suspend fun getHomeFood() = apiService.getHomeFood()
+    suspend fun getOrders(number: String) = apiService.getOrders(number = number)
 
 }

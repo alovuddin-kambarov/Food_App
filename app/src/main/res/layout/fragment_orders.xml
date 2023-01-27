@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.OrdersFragment"
+    android:background="@color/back"
     tools:ignore="MissingDefaultResource">
 
 
@@ -49,12 +50,12 @@
         android:id="@+id/animationViews"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/error_cat" />
+        app:lottie_rawRes="@raw/delivered" />
 
     <TextView
         android:id="@+id/tv_internet"

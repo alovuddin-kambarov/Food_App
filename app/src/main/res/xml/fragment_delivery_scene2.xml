@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+        <KeyFrameSet></KeyFrameSet>
+        <OnSwipe motion:touchAnchorId="@+id/rv" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start"></ConstraintSet>
+<!--
+    <PropertySet
+        app:applyMotionScene="false"
+        app:visibilityMode="ignore" />-->
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/rolling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/lottie"
+            motion:layout_constraintHorizontal_bias="0.897"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toEndOf="parent" >
+
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
+    </ConstraintSet>
+</MotionScene>

@@ -7,36 +7,48 @@
         motion:constraintSetStart="@id/start"
         motion:duration="3000">
         <KeyFrameSet>
+            ///////////////////////////////////////////////////////
             <KeyAttribute
-                motion:motionTarget="@+id/tv1"
-                motion:framePosition="95"
-                motion:curveFit="spline"
-                motion:motionProgress="@integer/material_motion_duration_long_1"
-                android:alpha="0.2" />
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/tv1" />
             <KeyAttribute
-                motion:motionTarget="@+id/imageView"
-                motion:framePosition="95"
-                motion:curveFit="spline"
-                motion:motionProgress="@integer/material_motion_duration_short_1"
-                android:alpha="0.2" />
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/imageView" />
             <KeyAttribute
-                motion:motionTarget="@+id/category"
-                motion:framePosition="95"
-                motion:curveFit="spline"
-                motion:motionProgress="@integer/material_motion_duration_long_1"
-                android:alpha="0.2" />
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/category" />
             <KeyAttribute
-                motion:motionTarget="@+id/search"
-                motion:framePosition="95"
-                motion:curveFit="spline"
-                motion:motionProgress="@integer/material_motion_duration_long_1"
-                android:alpha="0.2" />
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/search" />
             <KeyAttribute
-                motion:motionTarget="@+id/see_all_category"
-                motion:framePosition="95"
-                motion:curveFit="spline"
-                motion:motionProgress="@integer/material_motion_duration_medium_2"
-                android:alpha="0.2" />
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/see_all_category" />
+            ///////////////////////////////////////////////////////
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/tv1" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/imageView" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/category" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/search" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/see_all_category" />
         </KeyFrameSet>
         <OnSwipe motion:touchAnchorId="@+id/viewpager" />
     </Transition>
@@ -46,23 +58,23 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/category"
-            android:layout_width="-1dp"
-            android:layout_height="-1dp"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginTop="20dp"
             motion:layout_constraintTop_toBottomOf="@id/search" />
         <Constraint
             android:id="@+id/see_all_category"
-            android:layout_width="-1dp"
-            android:layout_height="-1dp"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="@dimen/_20sdp"
             motion:layout_constraintTop_toBottomOf="@id/search" />
 
         <Constraint
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="-1dp"
+            android:layout_height="1dp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_10sdp"
@@ -72,15 +84,15 @@
         <Constraint
             android:id="@+id/tv1"
             android:layout_width="@dimen/_170sdp"
-            android:layout_height="-1dp"
+            android:layout_height="1dp"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
             android:id="@+id/search"
-            android:layout_width="-1dp"
-            android:layout_height="-1dp"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="@dimen/_15sdp"
@@ -89,11 +101,11 @@
             motion:layout_goneMarginRight="@dimen/_15sdp" />
         <Constraint
             android:id="@+id/tab_layout"
-            motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp" />
+            motion:layout_constraintTop_toTopOf="parent" />
     </ConstraintSet>
 </MotionScene>

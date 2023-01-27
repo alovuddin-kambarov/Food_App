@@ -14,8 +14,10 @@
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/ic_add_to_basket_main.xml" value="0.2545" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/ic_add_to_basket_red.xml" value="0.2555" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.2225" />
+        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/ic_background.xml" value="0.2035" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/transparent.xml" value="0.2545" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/drawable/transparent_black.xml" value="0.152" />
+        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/about_dialog.xml" value="0.264" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/activity_about_burger.xml" value="0.2" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/activity_main.xml" value="0.18070652173913043" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/activity_registration.xml" value="0.2359375" />
@@ -26,9 +28,10 @@
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_about_burger.xml" value="0.264" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_all_cattigories.xml" value="0.25" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_burger.xml" value="0.12" />
-        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_delivery.xml" value="0.2" />
+        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_delivery.xml" value="0.12" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_main.xml" value="0.152" />
+        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_orders.xml" value="0.25" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_phone_number.xml" value="0.264" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
@@ -36,6 +39,7 @@
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/item_burger.xml" value="0.264" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/item_tab.xml" value="0.6" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/language_dialog.xml" value="0.176" />
+        <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/orders_item.xml" value="0.25" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/layout/phone_dialog.xml" value="0.264" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/menu/menu.xml" value="0.25" />
         <entry key="..\:/Users/IT Park/AndroidStudioProjects/FoodApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2035" />

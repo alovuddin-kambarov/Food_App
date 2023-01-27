@@ -1,5 +1,6 @@
 package com.aladdin.foodapp.ui
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +16,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.aladdin.foodapp.R
 import com.aladdin.foodapp.adapters.MyAdapter
@@ -38,7 +37,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         val arrayList1 = ArrayList<FoodHome>()
-
+        setProgress()
 
         var a = 0
         val viewModel = ViewModelProvider(this)[ViewModel::class.java]
@@ -47,7 +46,7 @@ class SearchFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
 
-
+                    dialog.cancel()
                     val myAdapter = MyAdapter(it.data!!, object : MyAdapter.OnClick {
                         override fun click(
                             pos: Int,
@@ -109,7 +108,7 @@ class SearchFragment : Fragment() {
                 Status.LOADING -> {}
                 Status.ERROR -> {
 
-                    Toast.makeText(binding.root.context, "ha", Toast.LENGTH_SHORT).show()
+                    dialog.cancel()
 
                 }
             }
@@ -142,5 +141,20 @@ class SearchFragment : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
 
     }
+
+
+    private lateinit var dialog: AlertDialog
+
+    private fun setProgress() {
+        dialog = AlertDialog.Builder(binding.root.context).create()
+        val view = LayoutInflater.from(binding.root.context)
+            .inflate(R.layout.custom_progress, null, false)
+        dialog.setView(view)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
 
 }

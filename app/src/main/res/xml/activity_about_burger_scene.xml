@@ -11,7 +11,11 @@
            <KeyAttribute
                motion:motionTarget="@+id/image"
                motion:framePosition="100"
-               android:alpha="0.2" />
+               android:alpha="0" />
+           <KeyAttribute
+               motion:motionTarget="@+id/image"
+               motion:framePosition="50"
+               android:alpha="0" />
        </KeyFrameSet>
         <OnSwipe motion:touchAnchorId="@+id/nestedScrollView" />
     </Transition>

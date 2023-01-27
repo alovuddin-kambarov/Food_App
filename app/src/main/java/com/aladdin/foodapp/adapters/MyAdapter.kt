@@ -38,22 +38,23 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
             binding.name.text = item.name
             binding.ball.text = "3.4"
             binding.price.text = item.price
-           // binding.subText.text = item.subTitle
+            // binding.subText.text = item.subTitle
             Picasso.get().load(item.image).into(binding.image)
 
             binding.addBasket.setOnClickListener {
                 a++
 
                 //if (a == 1) {
-                    item.count = a
-                    AppDatabase.getInstants(binding.root.context).dao().add(item)
-                        .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
-                //}
-            /*    item.count = a
-                AppDatabase.getInstants(binding.root.context).dao().update(item)
+                item.count = a
+                AppDatabase.getInstants(binding.root.context).dao().add(item)
                     .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()*/
+                    .subscribe()
+
+                //}
+                /*    item.count = a
+                    AppDatabase.getInstants(binding.root.context).dao().update(item)
+                        .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe()*/
 
                 binding.count.visibility = View.VISIBLE
                 binding.minus.visibility = View.VISIBLE
@@ -143,7 +144,6 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
             ball: TextView
         )
     }
-
 
 
 }

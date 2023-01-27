@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back"
     tools:context=".ui.MainFragment">
 
 
@@ -22,7 +23,6 @@
         android:elevation="@dimen/_5sdp"
         android:outlineAmbientShadowColor="@color/main_color"
         android:outlineSpotShadowColor="@color/main_color"
-        app:backgroundColor="@color/white"
         app:cornerRadius="@dimen/_20sdp"
         app:corners="top_left|top_right"
         app:iconTint="#877F7F"

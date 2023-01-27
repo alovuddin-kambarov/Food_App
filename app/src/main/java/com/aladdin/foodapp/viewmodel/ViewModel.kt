@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.aladdin.foodapp.models.BurgerRes
 import com.aladdin.foodapp.models.Category
 import com.aladdin.foodapp.models.FoodHome
+import com.aladdin.foodapp.models.OrderReq
 import com.aladdin.foodapp.repository.Repository
 import com.aladdin.foodapp.retrofit.ApiClient
 import com.aladdin.foodapp.utils.NetworkHelper
@@ -21,7 +22,8 @@ class ViewModel : ViewModel() {
     private var searchRepository = Repository(ApiClient.apiService)
     private var liveData = MutableLiveData<Resource<BurgerRes>>()
     private var liveDataCategory = MutableLiveData<Resource<List<Category>>>()
-    private var liveDataHome  = MutableLiveData<Resource<List<FoodHome>>>()
+    private var liveDataHome = MutableLiveData<Resource<List<FoodHome>>>()
+    private var liveDataOrder = MutableLiveData<Resource<List<OrderReq>>>()
 
 
     fun getFoods(
@@ -180,6 +182,57 @@ class ViewModel : ViewModel() {
         }
 
         return liveDataHome
+
+    }
+
+
+    fun getOrders(
+        context: Context, phone: String
+    ): MutableLiveData<Resource<List<OrderReq>>> {
+
+
+        viewModelScope.launch {
+            if (NetworkHelper(context).isNetworkConnected()) {
+                coroutineScope {
+                    supervisorScope {
+                        try {
+                            liveDataOrder.postValue(Resource.loading(null))
+                            val food = searchRepository.getOrders(phone)
+
+                            if (food.isSuccessful) {
+                                val success = Resource.success(food.body())
+
+                                liveDataOrder.postValue(success)
+                            } else {
+                                liveDataOrder.postValue(
+                                    Resource.error(
+                                        food.raw().toString(),
+                                        null
+                                    )
+                                )
+
+
+                            }
+
+
+                        } catch (e: Exception) {
+                            liveDataOrder.postValue(Resource.error(e.message ?: "Error", null))
+                        }
+                    }
+                }
+            } else {
+                liveDataOrder.postValue(
+                    Resource.error(
+                        "Internet no connection! Please, connect internet and try again!",
+                        null
+                    )
+                )
+
+            }
+
+        }
+
+        return liveDataOrder
 
     }
 

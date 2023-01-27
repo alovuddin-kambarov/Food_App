@@ -3,6 +3,7 @@ package com.aladdin.foodapp.retrofit
 import com.aladdin.foodapp.models.BurgerRes
 import com.aladdin.foodapp.models.Category
 import com.aladdin.foodapp.models.FoodHome
+import com.aladdin.foodapp.models.OrderReq
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -27,6 +28,10 @@ interface ApiService {
     @FormUrlEncoded
     @POST("read_foods_list.php")
     suspend fun getHomeFood(@Field("code") string: String = "!:GzxWR(34f"): Response<List<FoodHome>>
+
+    @FormUrlEncoded
+    @POST("read_phone.php")
+    suspend fun getOrders(@Field("code") string: String = "!:GzxWR(34f",@Field("phone_number") number: String ): Response<List<OrderReq>>
 
 }
 

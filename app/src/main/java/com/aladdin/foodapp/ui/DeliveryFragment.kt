@@ -15,20 +15,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
-import com.google.firebase.database.FirebaseDatabase
 import com.aladdin.foodapp.R
-import com.aladdin.foodapp.adapters.MyAdapterBasket
+import com.aladdin.foodapp.adapters.MyAdapterBasket2
 import com.aladdin.foodapp.databinding.FragmentDeliveryBinding
 import com.aladdin.foodapp.models.FoodHome
 import com.aladdin.foodapp.room.AppDatabase
+import com.aladdin.foodapp.utils.ArrayToString
 import com.aladdin.foodapp.utils.MySharedPreference
+import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
+import com.google.firebase.database.FirebaseDatabase
 import com.vicmikhailau.maskededittext.MaskedEditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import com.aladdin.foodapp.utils.Status
-import java.util.function.Function
-import java.util.stream.Collectors
+import kotlin.collections.ArrayList
+
 
 class DeliveryFragment : Fragment() {
 
@@ -36,15 +37,15 @@ class DeliveryFragment : Fragment() {
     private var _binding: FragmentDeliveryBinding? = null
 
     private lateinit var dialogP: AlertDialog
-    lateinit var viewModel: ViewModel
+    private lateinit var viewModel: ViewModel
     private var str = ""
     private val binding get() = _binding!!
-    var setPrice = 0
-    private lateinit var foodNameList: ArrayList<String>
-    lateinit var arrayList: ArrayList<FoodHome>
+    private var setPrice = 0
+    private lateinit var arrayList1: ArrayList<FoodHome>
 
 
-    var allPrice = 0
+    private var names: String = ""
+    private var allPrice = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("CheckResult")
@@ -54,31 +55,48 @@ class DeliveryFragment : Fragment() {
     ): View {
         _binding = FragmentDeliveryBinding.inflate(inflater, container, false)
 
-        arrayList = ArrayList()
+        arrayList1 = ArrayList()
 
         setProgress()
-        var a = 0
-        val adapter = MyAdapterBasket()
+
         AppDatabase.getInstants(binding.root.context).dao().getAll().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+            .observeOn(AndroidSchedulers.mainThread()).subscribe { it ->
 
 
-                    arrayList.addAll(it)
+                val adapter = MyAdapterBasket2(ArrayToString().rep(it))
+                Log.d("lalala",ArrayToString().rep(it).toString())
+                arrayList1.addAll(it)
+
+                /*         arrayList1 = arrayList1.stream()
+                             .collect(
+                                 collectingAndThen(toCollection(Supplier {
+                                     TreeSet(
+                                         comparingInt(arrayList1::getId)
+                                     )
+                                 }),
+                                     Function<R, RR> { ArrayList() })
+                             )*/
 
 
-                it.forEach { it2 ->
-                    allPrice += it2.price!!.toInt()
+
+                it.distinctBy { it.id }
+
+                it.distinctBy { l -> l.id }.forEach { it2 ->
+                    allPrice += it2.price.toInt() * it2.count
+                    val g = it2.name + "\n"
+                    names += g
                 }
+                Log.d("sasasa", it.distinctBy { k -> k.id }.toString())
 
                 if (allPrice < 1) {
                     try {
-                    binding.need.visibility = View.VISIBLE
-                    binding.rv.visibility = View.INVISIBLE
-                    binding.button.visibility = View.INVISIBLE
-                    binding.savat.visibility = View.GONE
-                    binding.rolling.visibility = View.INVISIBLE
-                    binding.lottie.visibility = View.INVISIBLE
-                    binding.basket.playAnimation()
+                        binding.need.visibility = View.VISIBLE
+                        binding.rv.visibility = View.INVISIBLE
+                        binding.button.visibility = View.INVISIBLE
+                        binding.savat.visibility = View.GONE
+                        binding.rolling.visibility = View.INVISIBLE
+                        binding.lottie.visibility = View.INVISIBLE
+                        binding.basket.playAnimation()
 
                     } catch (e: Exception) {
                     }
@@ -94,12 +112,12 @@ class DeliveryFragment : Fragment() {
 
                         binding.rolling.setText("$allPrice so'm")
                         setPrice = allPrice
-                        adapter.submitList(it)
+
+                        binding.rv.adapter = adapter
                         allPrice = 0
                     } catch (e: Exception) {
                     }
                 }
-
 
             }
         binding.button.setOnClickListener {
@@ -107,12 +125,11 @@ class DeliveryFragment : Fragment() {
             if (MySharedPreference.phoneNumber!!.isBlank()) {
                 phone()
             } else {
-                orderGivenSuccess(arrayList)
+                orderGivenSuccess(arrayList1)
             }
 
         }
 
-        binding.rv.adapter = adapter
 
         return binding.root
     }
@@ -143,28 +160,48 @@ class DeliveryFragment : Fragment() {
 
         var a = 0
 
-        foodNameList = ArrayList<String>()
+/*        foodNameList = ArrayList<String>()
 
         str = ""
         foodNameList.clear()
-        arrayList.forEach {
-            foodNameList.add("${it.name.toString()} -- ${it.size} -- ${it.count} ta")
-        }
+
+        for (index in arrayList1.indices) {
+
+            foodNameList.add("${arrayList1[index].name} -- ${arrayList1[index].count} ta")
+
+
+
+            Log.d("kakaka", arrayList.toString())
+        }*/
+
+        /*
+         arrayList.forEach {
+             if (it.id != it.id){
+                 foodNameList.add("${it.name} -- ${it.count} ta")
+                 Log.d("kakaka", it.toString())
+             }
+         }
+
+ */
 
 
         //  str = ArrayToString().rep(foodNameList)
 
-        str = foodNameList.stream()
-            .map<String>(Function { n: String -> n })
-            .collect(Collectors.joining("||", "", ""))
+//        str = foodNameList.stream()
+//            .map<String>(Function { n: String -> n })
+//            .collect(Collectors.joining("||", "", ""))
 
 
-
+        var phoneNumber = MySharedPreference.phoneNumber!!
+        phoneNumber = phoneNumber.replace("(", "", true)
+        phoneNumber = phoneNumber.replace(")", "", true)
+        phoneNumber = phoneNumber.replace(" ", "", true)
+        phoneNumber = phoneNumber.replace("-", "", true)
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
         viewModel.getFoods(
             binding.root.context,
-            str,
-            MySharedPreference.phoneNumber!!,
+            names,
+            phoneNumber,
             5,
             "katta",
             setPrice
@@ -188,7 +225,7 @@ class DeliveryFragment : Fragment() {
             dialog3.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog3.setView(view3)
             dialog3.setContentView(view3)
-            foodNameList.clear()
+//            foodNameList.clear()
             str = ""
             when (it.status) {
                 Status.SUCCESS -> {
@@ -196,7 +233,6 @@ class DeliveryFragment : Fragment() {
 
                     if (it!!.data!!.ok!!) {
                         str = ""
-                        foodNameList.clear()
 
 
                         dialog2.setOnShowListener {
@@ -205,6 +241,9 @@ class DeliveryFragment : Fragment() {
                         dialog2.setOnDismissListener {
                             binding.basket.playAnimation()
                             dialog3.cancel()
+                            names = ""
+                            arrayList1.clear()
+                            AppDatabase.getInstants(binding.root.context).dao().deleteAll()
                         }
 
                         if (a == 0) {
@@ -219,6 +258,7 @@ class DeliveryFragment : Fragment() {
                             dialog2.show()
                             dialog2.setOnShowListener {
                                 dialogP.cancel()
+                                arrayList.clear()
                             }
                         }
                         a++
@@ -244,15 +284,15 @@ class DeliveryFragment : Fragment() {
 
 
                     dialogP.show()
-             /*       view3.findViewById<TextView>(R.id.tv).text =
-                        "Yuborilmoqda..."
-                    view3.findViewById<LottieAnimationView>(R.id.animationViews)
-                        .setAnimation(R.raw.progress)
-                    view3.findViewById<LottieAnimationView>(R.id.animationViews).loop(true)
-                    if (a == 0) {
-                        dialog3.show()
-                    }
-*/
+                    /*       view3.findViewById<TextView>(R.id.tv).text =
+                               "Yuborilmoqda..."
+                           view3.findViewById<LottieAnimationView>(R.id.animationViews)
+                               .setAnimation(R.raw.progress)
+                           view3.findViewById<LottieAnimationView>(R.id.animationViews).loop(true)
+                           if (a == 0) {
+                               dialog3.show()
+                           }
+       */
 
                     //       Toast.makeText(binding.root.context, "Loading", Toast.LENGTH_SHORT).show()
 
@@ -331,16 +371,15 @@ class DeliveryFragment : Fragment() {
     }
 
 
-
-        private fun setProgress() {
-            dialogP = AlertDialog.Builder(binding.root.context).create()
-            val view = LayoutInflater.from(binding.root.context)
-                .inflate(R.layout.custom_progress, null, false)
-            dialogP.setView(view)
-            dialogP.setContentView(view)
-            dialogP.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            dialogP.setCancelable(false)
-        }
+    private fun setProgress() {
+        dialogP = AlertDialog.Builder(binding.root.context).create()
+        val view = LayoutInflater.from(binding.root.context)
+            .inflate(R.layout.custom_progress, null, false)
+        dialogP.setView(view)
+        dialogP.setContentView(view)
+        dialogP.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialogP.setCancelable(false)
+    }
 
 
 }

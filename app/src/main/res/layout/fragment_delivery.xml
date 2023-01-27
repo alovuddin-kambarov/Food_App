@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back"
     android:orientation="vertical"
-    android:background="#F3F3F3"
-    app:layoutDescription="@xml/fragment_delivery_scene"
+    app:layoutDescription="@xml/fragment_delivery_scene2"
     tools:context=".ui.DeliveryFragment">
 
     <LinearLayout
@@ -50,7 +50,8 @@
         android:textSize="@dimen/_26sdp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:visibilityMode="normal" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie"
@@ -84,6 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintTop_toBottomOf="@id/rolling"

@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
@@ -68,6 +69,8 @@ class AboutBurgerActivity : AppCompatActivity() {
             burger.price.toString() + " so'm"
         )
 
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+          window.statusBarColor = ContextCompat.getColor(this, R.color.asd)
 
         setProgress()
         closeKeyboard()
@@ -213,13 +216,18 @@ class AboutBurgerActivity : AppCompatActivity() {
             }
         }
 
-        str = burger.name.toString() + " -- " + pos + " -- " + binding.count.getText()
+        str = burger.name.toString() + " -- " + binding.count.getText()
             .toString() + " ta"
 
+        var phoneNumber = MySharedPreference.phoneNumber!!
+        phoneNumber = phoneNumber.replace("(", "", true)
+        phoneNumber = phoneNumber.replace(")", "", true)
+        phoneNumber = phoneNumber.replace(" ", "", true)
+        phoneNumber = phoneNumber.replace("-", "", true)
         viewModel.getFoods(
             binding.root.context,
             str,
-            MySharedPreference.phoneNumber!!,
+            phoneNumber,
             5,
             "katta",
             burgerPrice

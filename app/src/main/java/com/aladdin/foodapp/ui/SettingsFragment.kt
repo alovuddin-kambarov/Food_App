@@ -1,5 +1,6 @@
 package com.aladdin.foodapp.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -60,9 +62,30 @@ class SettingsFragment : Fragment() {
             share()
         }
 
+        binding.click5.setOnClickListener {
+            about()
+        }
+
 
 
         return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun about() {
+        val dialog = AlertDialog.Builder(binding.root.context).create()
+        val view = LayoutInflater.from(binding.root.context)
+            .inflate(R.layout.about_dialog, null, false)
+        dialog.setView(view)
+
+
+
+        view.findViewById<TextView>(R.id.version_tv).text = "Version code: " + BuildConfig.VERSION_CODE
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+
+
     }
 
     private fun language() {
