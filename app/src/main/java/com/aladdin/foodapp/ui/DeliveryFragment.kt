@@ -20,9 +20,7 @@ import com.aladdin.foodapp.adapters.MyAdapterBasket2
 import com.aladdin.foodapp.databinding.FragmentDeliveryBinding
 import com.aladdin.foodapp.models.FoodHome
 import com.aladdin.foodapp.room.AppDatabase
-import com.aladdin.foodapp.utils.ArrayToString
-import com.aladdin.foodapp.utils.MySharedPreference
-import com.aladdin.foodapp.utils.Status
+import com.aladdin.foodapp.utils.*
 import com.aladdin.foodapp.viewmodel.ViewModel
 import com.google.firebase.database.FirebaseDatabase
 import com.vicmikhailau.maskededittext.MaskedEditText
@@ -57,7 +55,16 @@ class DeliveryFragment : Fragment() {
 
         arrayList1 = ArrayList()
 
+
         setProgress()
+
+
+        binding.basket.setOnClickListener {
+
+            MyData.lll.set(true)
+        }
+
+
 
         AppDatabase.getInstants(binding.root.context).dao().getAll().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe { it ->
@@ -231,6 +238,7 @@ class DeliveryFragment : Fragment() {
                 Status.SUCCESS -> {
 
 
+                    names = ""
                     if (it!!.data!!.ok!!) {
                         str = ""
 
@@ -244,6 +252,7 @@ class DeliveryFragment : Fragment() {
                             names = ""
                             arrayList1.clear()
                             AppDatabase.getInstants(binding.root.context).dao().deleteAll()
+                            MyData.arrayList.clear()
                         }
 
                         if (a == 0) {

@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.aladdin.foodapp.BuildConfig
 import com.aladdin.foodapp.R
 import com.aladdin.foodapp.databinding.FragmentSettingsBinding
+import com.aladdin.foodapp.utils.MyData
 import com.aladdin.foodapp.utils.MySharedPreference
 import com.vicmikhailau.maskededittext.MaskedEditText
 
@@ -37,6 +38,7 @@ class SettingsFragment : Fragment() {
             binding.edit.visibility = View.VISIBLE
         }
 
+        MyData.lll.set(false)
         binding.number.text = MySharedPreference.phoneNumber
 
         binding.edit.setOnClickListener {

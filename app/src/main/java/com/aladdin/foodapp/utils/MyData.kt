@@ -2,6 +2,7 @@ package com.aladdin.foodapp.utils
 
 import com.google.firebase.auth.PhoneAuthProvider
 import com.aladdin.foodapp.models.Burger
+import com.aladdin.foodapp.models.FoodHome
 
 object MyData {
 
@@ -146,5 +147,9 @@ object MyData {
         return arrayList
     }
 
+
+   public var arrayList = ArrayList<FoodHome>()
+
+    val lll =   LastChance()
 
 }

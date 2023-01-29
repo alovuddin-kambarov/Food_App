@@ -1,6 +1,5 @@
 package com.aladdin.foodapp.ui
 
-import android.R
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -18,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.aladdin.foodapp.adapters.MyAdapter
 import com.aladdin.foodapp.databinding.FragmentBurgerBinding
 import com.aladdin.foodapp.models.FoodHome
+import com.aladdin.foodapp.utils.MyData
 import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
 
@@ -39,88 +39,90 @@ class BurgerFragment(var pos: String) : Fragment() {
         _binding = FragmentBurgerBinding.inflate(inflater, container, false)
 
 
-        setProgress()
-        Handler(Looper.myLooper()!!).postDelayed({
-            try {
-                viewModel = ViewModelProvider(this)[ViewModel::class.java]
-                arrayList1 = ArrayList<FoodHome>()
-                var a = 0
-                viewModel.getHomeFood(binding.root.context).observe(viewLifecycleOwner) {
 
-                    when (it.status) {
-                        Status.SUCCESS -> {
+             setProgress()
+            Handler(Looper.myLooper()!!).postDelayed({
+                try {
+                    viewModel = ViewModelProvider(this)[ViewModel::class.java]
+                    arrayList1 = ArrayList<FoodHome>()
+                    var a = 0
+                    viewModel.getHomeFood(binding.root.context).observe(viewLifecycleOwner) {
 
-                            dialog.cancel()
-                            binding.rv.visibility = View.VISIBLE
-                            // binding.animationViews.visibility = View.GONE
-                            if (a == 0) {
+                        when (it.status) {
+                            Status.SUCCESS -> {
 
-                                val arrayList = it.data!!
+                                dialog.cancel()
+                                binding.rv.visibility = View.VISIBLE
+                                // binding.animationViews.visibility = View.GONE
+                                if (a == 0) {
 
-                                for (burger in arrayList.indices) {
+                                    val arrayList = it.data!!
 
-                                    if (pos == arrayList[burger].category) {
+                                    for (burger in arrayList.indices) {
 
-                                        arrayList1.add(arrayList[burger])
+                                        if (pos == arrayList[burger].category) {
+
+                                            arrayList1.add(arrayList[burger])
+                                        }
+
                                     }
+                                    myAdapter = MyAdapter(arrayList1, object : MyAdapter.OnClick {
+                                        override fun click(
+                                            pos: Int,
+                                            imageView: ImageView,
+                                            star: ImageView,
+                                            textView: TextView,
+                                            ball: TextView
+                                        ) {
+                                            /* val fragmentNavigatorExtras = FragmentNavigatorExtras(imageView to "big")
+                                             findNavController().navigate(R.id.aboutBurgerFragment,null,null,fragmentNavigatorExtras)*/
 
+                                            val detailIntent =
+                                                Intent(
+                                                    requireActivity(),
+                                                    AboutBurgerActivity::class.java
+                                                ).putExtra("burger", arrayList1[pos])
+                                            val imageViewPair =
+                                                androidx.core.util.Pair(imageView as View, "small")
+                                            val starPair =
+                                                androidx.core.util.Pair(star as View, "star_icon")
+                                            val ballPair = androidx.core.util.Pair(star as View, "ball")
+
+                                            val textViewPair =
+                                                androidx.core.util.Pair.create<View, String>(
+                                                    textView as View,
+                                                    "burger_name"
+                                                )
+                                            val options =
+                                                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                    requireActivity(),
+                                                    imageViewPair,
+                                                    starPair,
+                                                    ballPair
+                                                )
+                                            //detailIntent.putExtra(TestActivity.DATA, item)
+                                            startActivity(detailIntent, options.toBundle())
+                                        }
+                                    })
+                                    binding.rv.adapter = myAdapter
                                 }
-                                myAdapter = MyAdapter(arrayList1, object : MyAdapter.OnClick {
-                                    override fun click(
-                                        pos: Int,
-                                        imageView: ImageView,
-                                        star: ImageView,
-                                        textView: TextView,
-                                        ball: TextView
-                                    ) {
-                                        /* val fragmentNavigatorExtras = FragmentNavigatorExtras(imageView to "big")
-                                         findNavController().navigate(R.id.aboutBurgerFragment,null,null,fragmentNavigatorExtras)*/
-
-                                        val detailIntent =
-                                            Intent(
-                                                requireActivity(),
-                                                AboutBurgerActivity::class.java
-                                            ).putExtra("burger", arrayList1[pos])
-                                        val imageViewPair =
-                                            androidx.core.util.Pair(imageView as View, "small")
-                                        val starPair =
-                                            androidx.core.util.Pair(star as View, "star_icon")
-                                        val ballPair = androidx.core.util.Pair(star as View, "ball")
-
-                                        val textViewPair =
-                                            androidx.core.util.Pair.create<View, String>(
-                                                textView as View,
-                                                "burger_name"
-                                            )
-                                        val options =
-                                            ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                                requireActivity(),
-                                                imageViewPair,
-                                                starPair,
-                                                ballPair
-                                            )
-                                        //detailIntent.putExtra(TestActivity.DATA, item)
-                                        startActivity(detailIntent, options.toBundle())
-                                    }
-                                })
-                                binding.rv.adapter = myAdapter
+                                a++
                             }
-                            a++
+                            Status.LOADING -> {}
+                            Status.ERROR -> {
+                                dialog.cancel()
+                                binding.rv.visibility = View.GONE
+                                //          binding.animationViews.visibility = View.VISIBLE
+                            }
                         }
-                        Status.LOADING -> {}
-                        Status.ERROR -> {
-                            dialog.cancel()
-                            binding.rv.visibility = View.GONE
-                            //          binding.animationViews.visibility = View.VISIBLE
-                        }
+
                     }
-
+                } catch (e: Exception) {
                 }
-            } catch (e: Exception) {
-            }
 
 
-        }, 500)
+            }, 500)
+
 
 
         return binding.root
@@ -157,7 +159,7 @@ class BurgerFragment(var pos: String) : Fragment() {
             .inflate(com.aladdin.foodapp.R.layout.custom_progress, null, false)
         dialog.setView(view)
         dialog.setContentView(view)
-        dialog.window?.setBackgroundDrawableResource(R.color.transparent)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
     }
 

@@ -24,8 +24,16 @@ class MainFragment : Fragment() {
 
 
         val viewPagerAdapter = ViewPagerAdapter(this)
+        val g = MyData.lll
+        g.get().observe(viewLifecycleOwner) {
+
+            if (it) {
+                binding.bottomBar.itemActiveIndex = 0
+                binding.vp.currentItem = 0
+            }
 
 
+        }
 
 
         binding.vp.isUserInputEnabled = false
@@ -52,7 +60,6 @@ class MainFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     override fun onDestroyView() {
