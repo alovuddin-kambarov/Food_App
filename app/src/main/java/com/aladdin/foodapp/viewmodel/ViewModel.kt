@@ -33,7 +33,7 @@ class ViewModel : ViewModel() {
         count: Int,
         orderSize: String,
         price: Int
-    ): LiveData<Resource<BurgerRes>> {
+    ): MutableLiveData<Resource<BurgerRes>> {
 
 
         viewModelScope.launch {
@@ -234,6 +234,11 @@ class ViewModel : ViewModel() {
 
         return liveDataOrder
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        
     }
 
 

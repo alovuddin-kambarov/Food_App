@@ -20,13 +20,15 @@ import com.aladdin.foodapp.adapters.MyAdapterBasket2
 import com.aladdin.foodapp.databinding.FragmentDeliveryBinding
 import com.aladdin.foodapp.models.FoodHome
 import com.aladdin.foodapp.room.AppDatabase
-import com.aladdin.foodapp.utils.*
+import com.aladdin.foodapp.utils.ArrayToString
+import com.aladdin.foodapp.utils.MyData
+import com.aladdin.foodapp.utils.MySharedPreference
+import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
 import com.google.firebase.database.FirebaseDatabase
 import com.vicmikhailau.maskededittext.MaskedEditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlin.collections.ArrayList
 
 
 class DeliveryFragment : Fragment() {
@@ -70,8 +72,8 @@ class DeliveryFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread()).subscribe { it ->
 
 
-                val adapter = MyAdapterBasket2(ArrayToString().rep(it))
-                Log.d("lalala",ArrayToString().rep(it).toString())
+                val adapter = MyAdapterBasket2(it)
+                Log.d("lalala", ArrayToString().rep(it).toString())
                 arrayList1.addAll(it)
 
                 /*         arrayList1 = arrayList1.stream()
@@ -85,15 +87,15 @@ class DeliveryFragment : Fragment() {
                              )*/
 
 
+                //    it.distinctBy { it.id }
 
-                it.distinctBy { it.id }
-
-                it.distinctBy { l -> l.id }.forEach { it2 ->
+                it.forEach { it2 ->
                     allPrice += it2.price.toInt() * it2.count
                     val g = it2.name + "\n"
                     names += g
                 }
-                Log.d("sasasa", it.distinctBy { k -> k.id }.toString())
+
+                Log.d("sasasa", it.toString())
 
                 if (allPrice < 1) {
                     try {
@@ -205,6 +207,7 @@ class DeliveryFragment : Fragment() {
         phoneNumber = phoneNumber.replace(" ", "", true)
         phoneNumber = phoneNumber.replace("-", "", true)
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
+
         viewModel.getFoods(
             binding.root.context,
             names,
@@ -239,52 +242,61 @@ class DeliveryFragment : Fragment() {
 
 
                     names = ""
-                    if (it!!.data!!.ok!!) {
-                        str = ""
+                    if (it.data != null) {
+
+                        if (it!!.data!!.ok!!) {
+                            str = ""
 
 
-                        dialog2.setOnShowListener {
-                            dialogP.cancel()
-                        }
-                        dialog2.setOnDismissListener {
-                            binding.basket.playAnimation()
-                            dialog3.cancel()
-                            names = ""
-                            arrayList1.clear()
-                            AppDatabase.getInstants(binding.root.context).dao().deleteAll()
-                            MyData.arrayList.clear()
-                        }
-
-                        if (a == 0) {
-                            dialogP.cancel()
-                            val db = FirebaseDatabase.getInstance().getReference("foods")
-                            db.child("sys").setValue(System.currentTimeMillis())
-
-                            view2.findViewById<TextView>(R.id.tv).text =
-                                "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
-                            view2.findViewById<LottieAnimationView>(R.id.animationViews)
-                                .setAnimation(R.raw.check_animation)
-                            dialog2.show()
                             dialog2.setOnShowListener {
                                 dialogP.cancel()
-                                arrayList.clear()
                             }
+                            dialog2.setOnDismissListener {
+                                binding.basket.playAnimation()
+                                dialog3.cancel()
+                                names = ""
+                                arrayList1.clear()
+                                AppDatabase.getInstants(binding.root.context).dao().deleteAll()
+                                MyData.arrayList.clear()
+                            }
+
+                            if (a == 0) {
+                                dialogP.cancel()
+                                val db = FirebaseDatabase.getInstance().getReference("foods")
+                                db.child("sys").setValue(System.currentTimeMillis())
+
+                                view2.findViewById<TextView>(R.id.tv).text =
+                                    "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
+                                view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                                    .setAnimation(R.raw.check_animation)
+                                dialog2.show()
+                                dialog2.setOnShowListener {
+                                    dialogP.cancel()
+                                    arrayList.clear()
+                                }
+
+
+                                viewModel
+
+                            }
+                            a++
+                            //     Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
+
+                            Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.data}")
+
+                            AppDatabase.getInstants(binding.root.context).dao().deleteAll()
+                            arrayList.clear()
+
+                            allPrice = 0
+                        } else {
+                            Toast.makeText(
+                                binding.root.context,
+                                "Something is wrong!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        a++
-                        //     Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
 
-                        Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.data}")
 
-                        AppDatabase.getInstants(binding.root.context).dao().deleteAll()
-                        arrayList.clear()
-
-                        allPrice = 0
-                    } else {
-                        Toast.makeText(
-                            binding.root.context,
-                            "Something is wrong!",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
 
 
@@ -379,6 +391,11 @@ class DeliveryFragment : Fragment() {
         dialog.show()
     }
 
+
+    override fun onPause() {
+        super.onPause()
+
+    }
 
     private fun setProgress() {
         dialogP = AlertDialog.Builder(binding.root.context).create()
