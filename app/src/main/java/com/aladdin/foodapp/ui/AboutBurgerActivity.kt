@@ -3,19 +3,15 @@ package com.aladdin.foodapp.ui
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.transition.Transition
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -28,18 +24,22 @@ import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
 import com.aladdin.foodapp.R
 import com.aladdin.foodapp.databinding.ActivityAboutBurgerBinding
+import com.aladdin.foodapp.models.FoodBody
 import com.aladdin.foodapp.models.FoodHome
 import com.aladdin.foodapp.room.AppDatabase
 import com.aladdin.foodapp.utils.MySharedPreference
 import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.vicmikhailau.maskededittext.MaskedEditText
 import com.yy.mobile.rollingtextview.CharOrder.Alphabet
 import com.yy.mobile.rollingtextview.RollingTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 
 class AboutBurgerActivity : AppCompatActivity() {
@@ -48,9 +48,8 @@ class AboutBurgerActivity : AppCompatActivity() {
 
     private lateinit var dialogP: AlertDialog
     lateinit var burger: FoodHome
-    var isLiked = false
-    lateinit var viewModel: ViewModel
-    private var str = ""
+    private var isLiked = false
+    private lateinit var viewModel: ViewModel
     lateinit var binding: ActivityAboutBurgerBinding
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -66,39 +65,16 @@ class AboutBurgerActivity : AppCompatActivity() {
         Picasso.get().load(burger.image).into(binding.image)
         binding.burgerName.text = burger.name
         binding.burgerPrice.setText(
-            burger.price.toString() + " so'm"
+            burger.price + " so'm"
         )
 
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-          window.statusBarColor = ContextCompat.getColor(this, R.color.asd)
+        burger.count = 1
 
         setProgress()
         closeKeyboard()
 
 
-        window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionEnd(transition: Transition?) {
-                //  Picasso.get().load(item.photoUrl).noFade().noPlaceholder().into(ivDetail)
-                transition?.removeListener(this)
-            }
-
-            override fun onTransitionResume(transition: Transition?) {
-                //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onTransitionPause(transition: Transition?) {
-                //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onTransitionCancel(transition: Transition?) {
-                //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onTransitionStart(transition: Transition?) {
-                //To change body of created functions use File | Settings | File Templates.
-            }
-        })
-
+        nothing()
 
 
         binding.back.setOnClickListener {
@@ -160,33 +136,6 @@ class AboutBurgerActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    /*   private fun orderGivenSuccess() {
-
-           val database = FirebaseDatabase.getInstance()
-           burger.count = binding.count.getText().toString().toInt()
-           val myRef = database.getReference("foods")
-
-
-           val arrayList = ArrayList<Burger>()
-
-           arrayList.add(burger)
-
-           val toString = myRef.push().key.toString()
-           myRef.child(toString).setValue(burger)
-
-
-           val dialog2 = AlertDialog.Builder(this).create()
-           val view2 = LayoutInflater.from(this).inflate(R.layout.check_out_dialog, null, false)
-           dialog2.setView(view2)
-           dialog2.setContentView(view2)
-
-
-           binding.count.setText(burger.count.toString())
-
-           dialog2.window?.setBackgroundDrawableResource(android.R.color.transparent)
-           dialog2.show()
-       }
-   */
 
     @SuppressLint("CutPasteId", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -194,44 +143,17 @@ class AboutBurgerActivity : AppCompatActivity() {
 
         var a = 0
 
+        val arrayList = ArrayList<FoodHome>()
+        arrayList.add(burger)
 
-        var pos = "kichik"
+        val foodBody = FoodBody("!:GzxWR(34f", replaceNumber(), arrayList)
 
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, resources
-                .getStringArray(com.aladdin.foodapp.R.array.item)
-        ) //setting the country_array to spinner
+        val toString = Gson().toJsonTree(foodBody).toString()
+        val create =
+            RequestBody.create(MediaType.parse("multipart/form-data"), toString)
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                pos = p0!!.getItemAtPosition(p2).toString()
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-                pos = "kichik"
-            }
-        }
-
-        str = burger.name.toString() + " -- " + binding.count.getText()
-            .toString() + " ta"
-
-        var phoneNumber = MySharedPreference.phoneNumber!!
-        phoneNumber = phoneNumber.replace("(", "", true)
-        phoneNumber = phoneNumber.replace(")", "", true)
-        phoneNumber = phoneNumber.replace(" ", "", true)
-        phoneNumber = phoneNumber.replace("-", "", true)
         viewModel.getFoods(
-            binding.root.context,
-            str,
-            phoneNumber,
-            5,
-            "katta",
-            burgerPrice
-
+            binding.root.context,create
         ).observe(this) {
 
             val dialog2 = AlertDialog.Builder(binding.root.context).create()
@@ -243,7 +165,6 @@ class AboutBurgerActivity : AppCompatActivity() {
             dialog2.setView(view2)
             dialog2.setContentView(view2)
 
-            str = ""
             when (it.status) {
                 Status.SUCCESS -> {
 
@@ -253,7 +174,6 @@ class AboutBurgerActivity : AppCompatActivity() {
                             "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
                         view2.findViewById<LottieAnimationView>(R.id.animationViews)
                             .setAnimation(R.raw.check_animation)
-                        str = ""
 
 
                         if (a == 0) {
@@ -268,7 +188,6 @@ class AboutBurgerActivity : AppCompatActivity() {
                         a++
 
 
-                        Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.data}")
 
                         AppDatabase.getInstants(binding.root.context).dao().deleteAll()
 
@@ -283,18 +202,7 @@ class AboutBurgerActivity : AppCompatActivity() {
 
                 }
                 Status.LOADING -> {
-
                     dialogP.show()
-                    /*        view2.findViewById<TextView>(R.id.tv).text =
-                                "Yuborilmoqda..."
-                            view2.findViewById<LottieAnimationView>(R.id.animationViews)
-                                .setAnimation(R.raw.progress)
-                            view2.findViewById<LottieAnimationView>(R.id.animationViews).loop(true)
-                            if (a == 0) {
-                                dialog2.show()
-                            }*/
-                    //       Toast.makeText(binding.root.context, "Loading", Toast.LENGTH_SHORT).show()
-
                 }
                 Status.ERROR -> {
 
@@ -310,10 +218,6 @@ class AboutBurgerActivity : AppCompatActivity() {
                         dialog2.show()
                     }
                     a++
-                    //       Toast.makeText(binding.root.context, "Error", Toast.LENGTH_SHORT).show()
-                    Log.d(ContentValues.TAG, "OnCreate: error22222 = = = = = ${it.message}")
-                    Log.d(ContentValues.TAG, "OnCreate: data22222 = = = = = ${it.message}")
-                    println("Error hihi: ${it.message} ")
 
                 }
 
@@ -331,7 +235,6 @@ class AboutBurgerActivity : AppCompatActivity() {
             if (!isLiked) {
                 isLiked = !isLiked
                 binding.liked.visibility = View.GONE
-                //   binding.likeImage.setImageResource(R.drawable.ic_add_to_basket_red)
                 binding.likeImage.playAnimation()
                 binding.likeImage.visibility = View.VISIBLE
                 binding.likeImage.addValueCallback(
@@ -346,8 +249,6 @@ class AboutBurgerActivity : AppCompatActivity() {
                 isLiked = !isLiked
                 binding.likeImage.playAnimation()
                 binding.like.visibility = View.VISIBLE
-                //    binding.likeImage.setImageResource(R.drawable.ic_add_to_basket)
-
 
             }
         }
@@ -367,8 +268,6 @@ class AboutBurgerActivity : AppCompatActivity() {
             rollingText("$burgerPrice so'm", R.id.burger_price)
             rollingText("$burgerPrice so'm", R.id.burger_price)
 
-            // burgerPrice - g
-
         }
         binding.minus.setOnClickListener {
             if (a > 1) {
@@ -385,6 +284,15 @@ class AboutBurgerActivity : AppCompatActivity() {
 
     }
 
+    private fun replaceNumber(): String {
+        var phoneNumber = MySharedPreference.phoneNumber!!
+        phoneNumber = phoneNumber.replace("(", "", true)
+        phoneNumber = phoneNumber.replace(")", "", true)
+        phoneNumber = phoneNumber.replace(" ", "", true)
+        phoneNumber = phoneNumber.replace("-", "", true)
+        return phoneNumber
+    }
+
     private fun rollingText(text: String, which: Int) {
         val rollingTextView2 = findViewById<RollingTextView>(which)
         rollingTextView2.animationDuration = 100L
@@ -398,11 +306,35 @@ class AboutBurgerActivity : AppCompatActivity() {
         rollingTextView2.setText(text)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun nothing() {
+
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.statusBarColor = ContextCompat.getColor(this, R.color.asd)
+
+        window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition?) {
+                transition?.removeListener(this)
+            }
+
+            override fun onTransitionResume(transition: Transition?) {
+            }
+
+            override fun onTransitionPause(transition: Transition?) {
+            }
+
+            override fun onTransitionCancel(transition: Transition?) {
+            }
+
+            override fun onTransitionStart(transition: Transition?) {
+            }
+        })
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
-
         MySharedPreference.isCategory = false
-        //      MySharedPreference.isCategory = true
     }
 
     private fun closeKeyboard() {

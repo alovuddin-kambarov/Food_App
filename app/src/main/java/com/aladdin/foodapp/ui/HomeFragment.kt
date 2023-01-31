@@ -2,6 +2,7 @@ package com.aladdin.foodapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.aladdin.foodapp.R
 import com.aladdin.foodapp.adapters.ViewPagerAdapter2
 import com.aladdin.foodapp.databinding.FragmentHomeBinding
 import com.aladdin.foodapp.databinding.ItemTabBinding
+import com.aladdin.foodapp.utils.MyData
 import com.aladdin.foodapp.utils.MySharedPreference
 import com.aladdin.foodapp.viewmodel.ViewModel
 import com.aladdin.foodapp.utils.Status
@@ -48,8 +50,6 @@ class HomeFragment : Fragment() {
         binding.search.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
-
-
 
         binding.seeAllCategory.setOnClickListener {
             findNavController().navigate(

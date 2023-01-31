@@ -1,16 +1,13 @@
 package com.aladdin.foodapp.repository
 
 import com.aladdin.foodapp.retrofit.ApiService
+import okhttp3.RequestBody
 
 class Repository(var apiService: ApiService) {
 
     suspend fun getFood(
-        foodName: String,
-        phoneNumber: String,
-        count: Int,
-        orderSize: String,
-        price: Int
-    ) = apiService.getFoods(foodName, phoneNumber, count, orderSize, price)
+        foodBody: RequestBody,
+    ) = apiService.getFoods( foodBody )
 
     suspend fun getCategory() = apiService.getCategory()
     suspend fun getHomeFood() = apiService.getHomeFood()

@@ -2,6 +2,8 @@ package com.aladdin.foodapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     private var _binding: FragmentOrdersBinding? = null
     private val binding: FragmentOrdersBinding get() = _binding!!
     lateinit var viewModel: ViewModel
+    private lateinit var dialog: AlertDialog
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -34,19 +37,31 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     ): View {
         _binding = FragmentOrdersBinding.inflate(inflater, container, false)
 
+        setProgress()
+        Handler(Looper.myLooper()!!).postDelayed({
+
+            loadOrders()
+        },600)
+
+        binding.swiperefresh.setOnRefreshListener {
+            binding.rv.visibility = View.GONE
+            loadOrders()
+        }
+
 
         binding.back.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        var phoneNumber = MySharedPreference.phoneNumber!!
-        phoneNumber = phoneNumber.replace("(", "", true)
-        phoneNumber = phoneNumber.replace(")", "", true)
-        phoneNumber = phoneNumber.replace(" ", "", true)
-        phoneNumber = phoneNumber.replace("-", "", true)
 
+
+        return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadOrders() {
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
-        viewModel.getOrders(binding.root.context, phoneNumber).observe(viewLifecycleOwner) {
+        viewModel.getOrders(binding.root.context, replaceNumber()).observe(viewLifecycleOwner) {
 
             val dialog2 = AlertDialog.Builder(binding.root.context).create()
             val view2 = LayoutInflater.from(binding.root.context)
@@ -68,6 +83,9 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
             when (it.status) {
                 Status.SUCCESS -> {
 
+                    binding.rv.visibility = View.VISIBLE
+                    dialog.cancel()
+                    binding.swiperefresh.isRefreshing = false
                     if (!it.data.isNullOrEmpty()){
                         binding.rv.adapter = MyOrderAdapter(it.data)
                         binding.animationViews.visibility = View.GONE
@@ -81,11 +99,13 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
                 }
                 Status.LOADING -> {
 
-
                 }
                 Status.ERROR -> {
 
+                    dialog.cancel()
+                    binding.swiperefresh.isRefreshing = false
                     dialog2.cancel()
+                    Log.d("nanana ", it.message.toString())
                     view2.findViewById<TextView>(R.id.tv).text =
                         "Nimadur xato ketti :(\n" +
                                 "Ehtimol, internet bilan bog'liq muammo bor. Iltimos, internetga ulanib, qayta urinib ko'ring!"
@@ -99,9 +119,25 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
         }
 
+    }
+    private fun replaceNumber(): String {
+        var phoneNumber = MySharedPreference.phoneNumber!!
+        phoneNumber = phoneNumber.replace("(", "", true)
+        phoneNumber = phoneNumber.replace(")", "", true)
+        phoneNumber = phoneNumber.replace(" ", "", true)
+        phoneNumber = phoneNumber.replace("-", "", true)
+        return phoneNumber
+    }
 
-
-        return binding.root
+    private fun setProgress() {
+        dialog = AlertDialog.Builder(binding.root.context).create()
+        val view = LayoutInflater.from(binding.root.context)
+            .inflate(com.aladdin.foodapp.R.layout.custom_progress, null, false)
+        dialog.setView(view)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     override fun onDestroyView() {

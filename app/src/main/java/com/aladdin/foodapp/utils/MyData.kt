@@ -151,5 +151,7 @@ object MyData {
    public var arrayList = ArrayList<FoodHome>()
 
     val lll =   LastChance()
+    val aaa =   LastChance2()
+    val swipe =   LastChance3()
 
 }

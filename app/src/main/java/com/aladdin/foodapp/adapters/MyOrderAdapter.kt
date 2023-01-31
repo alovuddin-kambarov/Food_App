@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aladdin.foodapp.databinding.ItemBurgerBinding
 import com.aladdin.foodapp.models.OrderReq
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 
 
 class MyOrderAdapter(private var list: List<OrderReq>) :
@@ -31,11 +32,16 @@ class MyOrderAdapter(private var list: List<OrderReq>) :
 
             var a = 0
 
-            binding.name.text = item.foods[0]
+            binding.vision.visibility = View.GONE
+            binding.name.text = item.foods
             binding.ball.text = "3.4"
-            binding.price.text = item.price
+            binding.price.text = item.price + " so'm"
+            binding.count.visibility = View.VISIBLE
+            binding.count.setText(item.count)
             // binding.subText.text = item.subTitle
-            // Picasso.get().load(item.image).into(binding.image)
+           Picasso.get().load(item.image).into(binding.image)
+            binding.addBasket.visibility = View.GONE
+            binding.minus.visibility = View.GONE
 
             binding.addBasket.setOnClickListener {
                 a++

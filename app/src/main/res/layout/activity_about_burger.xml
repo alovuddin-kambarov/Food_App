@@ -231,6 +231,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
+                    android:visibility="gone"
                     android:layout_weight="1"
                     android:background="@drawable/back2"
                     android:orientation="vertical">

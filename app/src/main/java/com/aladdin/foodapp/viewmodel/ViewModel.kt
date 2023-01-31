@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aladdin.foodapp.models.BurgerRes
-import com.aladdin.foodapp.models.Category
-import com.aladdin.foodapp.models.FoodHome
-import com.aladdin.foodapp.models.OrderReq
+import com.aladdin.foodapp.models.*
 import com.aladdin.foodapp.repository.Repository
 import com.aladdin.foodapp.retrofit.ApiClient
 import com.aladdin.foodapp.utils.NetworkHelper
@@ -16,6 +13,7 @@ import com.aladdin.foodapp.utils.Resource
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import okhttp3.RequestBody
 
 class ViewModel : ViewModel() {
 
@@ -28,11 +26,7 @@ class ViewModel : ViewModel() {
 
     fun getFoods(
         context: Context,
-        foodList: String,
-        phoneNumber: String,
-        count: Int,
-        orderSize: String,
-        price: Int
+        foodBody:RequestBody
     ): MutableLiveData<Resource<BurgerRes>> {
 
 
@@ -43,11 +37,7 @@ class ViewModel : ViewModel() {
                         try {
                             liveData.postValue(Resource.loading(null))
                             val food = searchRepository.getFood(
-                                foodList,
-                                phoneNumber,
-                                count,
-                                orderSize,
-                                price
+                                foodBody
                             )
 
                             if (food.isSuccessful) {
@@ -238,7 +228,7 @@ class ViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        
+
     }
 
 
