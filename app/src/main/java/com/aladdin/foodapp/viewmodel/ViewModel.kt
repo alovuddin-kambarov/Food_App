@@ -21,6 +21,7 @@ class ViewModel : ViewModel() {
     private var liveData = MutableLiveData<Resource<BurgerRes>>()
     private var liveDataCategory = MutableLiveData<Resource<List<Category>>>()
     private var liveDataHome = MutableLiveData<Resource<List<FoodHome>>>()
+    private var liveDataHome2 = MutableLiveData<Resource<List<FoodHome>>>()
     private var liveDataOrder = MutableLiveData<Resource<List<OrderReq>>>()
 
 
@@ -138,6 +139,55 @@ class ViewModel : ViewModel() {
                         try {
                             liveDataHome.postValue(Resource.loading(null))
                             val food = searchRepository.getHomeFood()
+
+                            if (food.isSuccessful) {
+                                val success = Resource.success(food.body())
+                                liveDataHome.postValue(success)
+                            } else {
+                                liveDataHome.postValue(
+                                    Resource.error(
+                                        food.raw().toString(),
+                                        null
+                                    )
+                                )
+
+
+                            }
+
+
+                        } catch (e: Exception) {
+                            liveDataHome.postValue(Resource.error(e.message ?: "Error", null))
+                        }
+                    }
+                }
+            } else {
+                liveDataHome.postValue(
+                    Resource.error(
+                        "Internet no connection! Please, connect internet and try again!",
+                        null
+                    )
+                )
+
+            }
+
+        }
+
+        return liveDataHome
+
+    }
+    fun getFoodByCate(
+        context: Context,
+        name:String
+    ): MutableLiveData<Resource<List<FoodHome>>> {
+
+
+        viewModelScope.launch {
+            if (NetworkHelper(context).isNetworkConnected()) {
+                coroutineScope {
+                    supervisorScope {
+                        try {
+                            liveDataHome.postValue(Resource.loading(null))
+                            val food = searchRepository.getFoodByCate(name)
 
                             if (food.isSuccessful) {
                                 val success = Resource.success(food.body())

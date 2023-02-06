@@ -18,6 +18,10 @@ interface ApiService {
     suspend fun getCategory(@Field("code") string: String = "!:GzxWR(34f"): Response<List<Category>>
 
     @FormUrlEncoded
+    @POST("read_food_cate.php")
+    suspend fun getFoodByCate(@Field("code") string: String = "!:GzxWR(34f",@Field("name") name: String): Response<List<FoodHome>>
+
+    @FormUrlEncoded
     @POST("read_foods_list.php")
     suspend fun getHomeFood(@Field("code") string: String = "!:GzxWR(34f"): Response<List<FoodHome>>
 

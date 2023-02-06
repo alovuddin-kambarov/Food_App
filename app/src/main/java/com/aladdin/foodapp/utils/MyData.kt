@@ -1,8 +1,8 @@
 package com.aladdin.foodapp.utils
 
-import com.google.firebase.auth.PhoneAuthProvider
 import com.aladdin.foodapp.models.Burger
 import com.aladdin.foodapp.models.FoodHome
+import com.google.firebase.auth.PhoneAuthProvider
 
 object MyData {
 
@@ -22,7 +22,7 @@ object MyData {
                 "20000",
                 "3.4",
                 0,
-                "katta",1
+                "katta", 1
             )
         )
         arrayList.add(
@@ -32,7 +32,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "22000",
                 "3.4",
-                0, "katta",1
+                0, "katta", 1
             )
         )
         arrayList.add(
@@ -42,7 +42,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "24000",
                 "3.4",
-                0, "katta",1
+                0, "katta", 1
             )
         )
         arrayList.add(
@@ -52,7 +52,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "22000",
                 "3.4",
-                0, "katta",1
+                0, "katta", 1
             )
         )
         arrayList.add(
@@ -62,7 +62,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "22000",
                 "3.4",
-                1, "katta",1
+                1, "katta", 1
             )
         )
         arrayList.add(
@@ -72,7 +72,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "22000",
                 "3.4",
-                1, "katta",1
+                1, "katta", 1
             )
         )
         arrayList.add(
@@ -82,7 +82,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "22000",
                 "3.4",
-                1, "katta",1
+                1, "katta", 1
             )
         )
 
@@ -93,7 +93,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "10000",
                 "3.4",
-                2, "katta",1
+                2, "katta", 1
             )
         )
 
@@ -104,7 +104,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "19000",
                 "3.4",
-                2, "katta",1
+                2, "katta", 1
             )
         )
 
@@ -117,7 +117,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "21000",
                 "3.4",
-                2, "katta",1
+                2, "katta", 1
             )
         )
 
@@ -129,7 +129,7 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "12000",
                 "3.4",
-                2, "katta",1
+                2, "katta", 1
             )
         )
 
@@ -141,17 +141,20 @@ object MyData {
                 "Piyoz, kartoshka, kechup mayanez, katlet",
                 "4000",
                 "3.4",
-                2, "katta",1
+                2, "katta", 1
             )
         )
         return arrayList
     }
 
 
-   public var arrayList = ArrayList<FoodHome>()
+    public var arrayList = ArrayList<FoodHome>()
 
-    val lll =   LastChance()
-    val aaa =   LastChance2()
-    val swipe =   LastChance3()
+    val lll = LastChance()
+    val aaa = LastChance2()
+    val swipe = LastChance3()
+
+
+    var categoryList = ArrayList<String>()
 
 }

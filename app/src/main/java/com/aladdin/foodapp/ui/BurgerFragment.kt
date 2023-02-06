@@ -27,14 +27,13 @@ import com.aladdin.foodapp.viewmodel.ViewModel
 class BurgerFragment(var pos: String) : Fragment() {
 
     private lateinit var myAdapter: MyAdapter
+    private lateinit var dialog: AlertDialog
+    private lateinit var dialog2: AlertDialog
     private var _binding: FragmentBurgerBinding? = null
 
     private val binding get() = _binding!!
-    lateinit var arrayList1: ArrayList<FoodHome>
 
-    lateinit var viewModel: ViewModel
-    private lateinit var dialog: AlertDialog
-    private lateinit var dialog2: AlertDialog
+    private lateinit var viewModel: ViewModel
 
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun onCreateView(
@@ -44,15 +43,18 @@ class BurgerFragment(var pos: String) : Fragment() {
         _binding = FragmentBurgerBinding.inflate(inflater, container, false)
 
 
-        dialog()
+        try {
+            dialog()
 
-        getData()
-        binding.swiperefresh.setOnRefreshListener {
             getData()
+            binding.swiperefresh.setOnRefreshListener {
+                getData()
+            }
+            setProgress()
+        } catch (e: Exception) {
         }
 
 
-        setProgress()
 
 
 
@@ -68,93 +70,95 @@ class BurgerFragment(var pos: String) : Fragment() {
                 Handler(Looper.myLooper()!!).postDelayed({
                     try {
                         viewModel = ViewModelProvider(this)[ViewModel::class.java]
-                        arrayList1 = ArrayList<FoodHome>()
                         var a = 0
-                        viewModel.getHomeFood(binding.root.context).observe(viewLifecycleOwner) {
+                        viewModel.getFoodByCate(binding.root.context, pos)
+                            .observe(viewLifecycleOwner) {
 
-                            when (it.status) {
-                                Status.SUCCESS -> {
+                                when (it.status) {
+                                    Status.SUCCESS -> {
 
-                                    dialog.cancel()
-                                    binding.swiperefresh.isRefreshing = false
-                                    binding.rv.visibility = View.VISIBLE
-                                    if (a == 0) {
+                                        dialog.cancel()
+                                        binding.swiperefresh.isRefreshing = false
+                                        binding.rv.visibility = View.VISIBLE
+                                        if (a == 0) {
 
-                                        val arrayList = it.data!!
+                                            val arrayList = it.data!!
 
-                                        for (burger in arrayList.indices) {
+                                            try {
+                                                myAdapter =
+                                                    MyAdapter(
+                                                        arrayList,
+                                                        object : MyAdapter.OnClick {
+                                                            @SuppressLint("NotifyDataSetChanged")
+                                                            override fun click(
+                                                                pos: Int,
+                                                                imageView: ImageView,
+                                                                star: ImageView,
+                                                                textView: TextView,
+                                                                ball: TextView,
+                                                                burger: FoodHome,
+                                                            ) {
 
-                                            if (pos == arrayList[burger].category) {
 
-                                                arrayList1.add(arrayList[burger])
+                                                                val detailIntent =
+                                                                    Intent(
+                                                                        requireActivity(),
+                                                                        AboutBurgerActivity::class.java
+                                                                    ).putExtra("burger", burger)
+
+                                                                val imageViewPair =
+                                                                    androidx.core.util.Pair(
+                                                                        imageView as View,
+                                                                        "small"
+                                                                    )
+                                                                /*  val starPair =
+                                                                      androidx.core.util.Pair(
+                                                                          star as View,
+                                                                          "star_icon"
+                                                                      )*/
+                                                                val ballPair =
+                                                                    androidx.core.util.Pair(
+                                                                        star as View,
+                                                                        "ball"
+                                                                    )
+
+                                                                val options =
+                                                                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                                        requireActivity(),
+                                                                        imageViewPair,
+                                                                        // starPair,
+                                                                        ballPair
+                                                                    )
+                                                                startActivity(
+                                                                    detailIntent,
+                                                                    options.toBundle()
+                                                                )
+                                                            }
+                                                        })
+                                            } catch (e: Exception) {
                                             }
+                                            binding.rv.adapter = myAdapter
+                                            val g = MyData.aaa
+                                            g.get().observe(viewLifecycleOwner) {
 
-                                        }
-                                        myAdapter =
-                                            MyAdapter(arrayList1, object : MyAdapter.OnClick {
-                                                @SuppressLint("NotifyDataSetChanged")
-                                                override fun click(
-                                                    pos: Int,
-                                                    imageView: ImageView,
-                                                    star: ImageView,
-                                                    textView: TextView,
-                                                    ball: TextView
-                                                ) {
-
-
-                                                    val detailIntent =
-                                                        Intent(
-                                                            requireActivity(),
-                                                            AboutBurgerActivity::class.java
-                                                        ).putExtra("burger", arrayList1[pos])
-                                                    val imageViewPair =
-                                                        androidx.core.util.Pair(
-                                                            imageView as View,
-                                                            "small"
-                                                        )
-                                                    val starPair =
-                                                        androidx.core.util.Pair(
-                                                            star as View,
-                                                            "star_icon"
-                                                        )
-                                                    val ballPair = androidx.core.util.Pair(
-                                                        star as View,
-                                                        "ball"
-                                                    )
-
-                                                    val options =
-                                                        ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                                            requireActivity(),
-                                                            imageViewPair,
-                                                            starPair,
-                                                            ballPair
-                                                        )
-                                                    startActivity(detailIntent, options.toBundle())
+                                                if (it) {
+                                                    binding.rv.adapter = myAdapter
                                                 }
-                                            })
-                                        binding.rv.adapter = myAdapter
-                                        val g = MyData.aaa
-                                        g.get().observe(viewLifecycleOwner) {
 
-                                            if (it) {
-                                                myAdapter.notifyDataSetChanged()
-                                                binding.rv.adapter = myAdapter
                                             }
-
                                         }
+                                        a++
                                     }
-                                    a++
-                                }
-                                Status.LOADING -> {}
-                                Status.ERROR -> {
-                                    dialog.cancel()
-                                    binding.rv.visibility = View.GONE
+                                    Status.LOADING -> {}
+                                    Status.ERROR -> {
+                                        dialog.cancel()
+                                        binding.rv.visibility = View.GONE
 
 
+                                    }
                                 }
+
                             }
-
-                        }
                     } catch (e: Exception) {
                     }
 
@@ -187,21 +191,18 @@ class BurgerFragment(var pos: String) : Fragment() {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onPause() {
-        super.onPause()
-
-    }
-
 
     private fun setProgress() {
         dialog = AlertDialog.Builder(binding.root.context).create()
         val view = LayoutInflater.from(binding.root.context)
-            .inflate(com.aladdin.foodapp.R.layout.custom_progress, null, false)
+            .inflate(R.layout.custom_progress, null, false)
         dialog.setView(view)
         dialog.setContentView(view)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.show()
+        try {
+            dialog.show()
+        } catch (e: Exception) {
+        }
     }
 
 

@@ -47,7 +47,7 @@ class SettingsFragment : Fragment() {
 
         binding.click.setOnClickListener {
             findNavController().navigate(
-                R.id.aboutBurgerFragment,
+                R.id.orders,
                 Bundle(),
                 setAnimation().build()
             )

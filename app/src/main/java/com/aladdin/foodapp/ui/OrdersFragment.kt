@@ -21,12 +21,11 @@ import com.aladdin.foodapp.utils.MySharedPreference
 import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
 
-
-class OrdersFragment : Fragment(R.layout.fragment_orders) {
+class  OrdersFragment : Fragment(R.layout.fragment_orders) {
 
     private var _binding: FragmentOrdersBinding? = null
     private val binding: FragmentOrdersBinding get() = _binding!!
-    lateinit var viewModel: ViewModel
+    private lateinit var viewModel: ViewModel
     private lateinit var dialog: AlertDialog
 
     @SuppressLint("SetTextI18n")
@@ -41,7 +40,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         Handler(Looper.myLooper()!!).postDelayed({
 
             loadOrders()
-        },600)
+        }, 600)
 
         binding.swiperefresh.setOnRefreshListener {
             binding.rv.visibility = View.GONE
@@ -54,6 +53,12 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         }
 
 
+        if (MySharedPreference.phoneNumber.isNullOrEmpty()){
+            binding.rv.visibility = View.GONE
+            binding.savat.visibility = View.GONE
+            binding.lottie.visibility = View.GONE
+            binding.animationViews.visibility = View.VISIBLE
+        }
 
         return binding.root
     }
@@ -82,17 +87,56 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
             dialog3.setContentView(view3)
             when (it.status) {
                 Status.SUCCESS -> {
+                    var allPrice = 0
+                    it.data!!.forEach { order ->
+                        allPrice += order.price.toInt() * order.count.toInt()
 
-                    binding.rv.visibility = View.VISIBLE
-                    dialog.cancel()
-                    binding.swiperefresh.isRefreshing = false
-                    if (!it.data.isNullOrEmpty()){
-                        binding.rv.adapter = MyOrderAdapter(it.data)
-                        binding.animationViews.visibility = View.GONE
+                    }
+
+                    if (it.data.isNotEmpty()){
+
+                        when (it.data[0].processing) {
+                            "t" -> {
+                            binding.savat.text = "Tayyormanmoqda..."
+                            binding.savat.visibility = View.VISIBLE
+                            binding.lottie.setAnimation(R.raw.cooking)
+                            binding.lottie.visibility = View.VISIBLE
+                        }
+                            "y" -> {
+                            binding.savat.text = "Yetkazilmoqda..."
+                            binding.lottie.setAnimation(R.raw.delivering)
+                            binding.lottie.visibility = View.VISIBLE
+                            binding.savat.visibility = View.VISIBLE
+                        }
+                            else -> {
+
+                            binding.rv.visibility = View.GONE
+                            binding.savat.visibility = View.GONE
+                            binding.lottie.visibility = View.GONE
+                            binding.animationViews.visibility = View.VISIBLE
+                        }
+                        }
                     }else{
                         binding.animationViews.visibility = View.VISIBLE
                     }
 
+                    binding.rolling.setText("$allPrice so'm")
+
+                    binding.rv.visibility = View.VISIBLE
+                    binding.savat.visibility = View.VISIBLE
+                    binding.lottie.visibility = View.VISIBLE
+                    dialog.cancel()
+                    binding.swiperefresh.isRefreshing = false
+                    if (!it.data.isNullOrEmpty()) {
+                        binding.rv.adapter = MyOrderAdapter(it.data)
+                        binding.animationViews.visibility = View.GONE
+                    } else {
+                        binding.animationViews.visibility = View.VISIBLE
+                        binding.rv.visibility = View.GONE
+                        binding.savat.visibility = View.GONE
+                        binding.lottie.visibility = View.GONE
+                        binding.rolling.visibility = View.GONE
+                    }
 
                     Log.d("nanana ", it.message.toString())
 
@@ -116,10 +160,10 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
             }
 
-
         }
 
     }
+
     private fun replaceNumber(): String {
         var phoneNumber = MySharedPreference.phoneNumber!!
         phoneNumber = phoneNumber.replace("(", "", true)
@@ -132,7 +176,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     private fun setProgress() {
         dialog = AlertDialog.Builder(binding.root.context).create()
         val view = LayoutInflater.from(binding.root.context)
-            .inflate(com.aladdin.foodapp.R.layout.custom_progress, null, false)
+            .inflate(R.layout.custom_progress, null, false)
         dialog.setView(view)
         dialog.setContentView(view)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)

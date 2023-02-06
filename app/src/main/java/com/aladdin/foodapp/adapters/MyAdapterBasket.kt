@@ -1,5 +1,7 @@
 package com.aladdin.foodapp.adapters
 
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,17 @@ class MyAdapterBasket :
 
         fun onBind(burger: FoodHome) {
 
+            if (burger.visible == "g"){
+                binding.name.paintFlags = binding.name.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }else{
+                binding.name.setTypeface(null, Typeface.BOLD)
+            }
+
+            if (burger.name.contains("combo") || burger.name.contains("Combo")  ){
+                binding.newImage.visibility = View.VISIBLE
+            }else{
+                binding.newImage.visibility = View.GONE
+            }
             binding.name.text = burger.name
             binding.ball.text = "3.4"
             binding.count.visibility = View.VISIBLE

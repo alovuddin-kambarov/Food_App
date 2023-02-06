@@ -13,5 +13,7 @@ data class FoodHome(
     val name: String,
     val price: String,
     var count: Int,
-    var size:String
+    var size:String,
+    var description:String,
+    var visible:String
 ):Serializable

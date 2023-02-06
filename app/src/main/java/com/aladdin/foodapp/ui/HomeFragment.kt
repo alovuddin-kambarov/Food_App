@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
 
                     val dialog2 = AlertDialog.Builder(binding.root.context).create()
                     val view = LayoutInflater.from(binding.root.context)
-                        .inflate(com.aladdin.foodapp.R.layout.check_out_dialog, null, false)
+                        .inflate(R.layout.check_out_dialog, null, false)
 
                     view.findViewById<TextView>(R.id.tv).text =
                         "Nimadur xato ketti :(\nEhtimol, internet bilan bog'liq muammo bor. Iltimos, internetga ulanib, qayta urinib ko'ring!"
@@ -181,7 +181,19 @@ class HomeFragment : Fragment() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                val customView = tab!!.customView
+                try {
+                    val itemTabBinding = ItemTabBinding.bind(customView!!)
+                    itemTabBinding.itemTv.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.white
+                        )
+                    )
+                    itemTabBinding.back.setBackgroundResource(R.drawable.design2)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         })
     }
@@ -208,6 +220,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+/*
     override fun onResume() {
         if (MySharedPreference.isCategory!!){
 
@@ -226,6 +239,7 @@ class HomeFragment : Fragment() {
         //MySharedPreference.isCategory = false
 
     }
+*/
 
     override fun onPause() {
         super.onPause()

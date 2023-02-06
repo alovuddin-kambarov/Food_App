@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.aladdin.foodapp.R
 import com.aladdin.foodapp.adapters.CategoryAdapter
 import com.aladdin.foodapp.databinding.FragmentAllCattigoriesBinding
 import com.aladdin.foodapp.utils.MySharedPreference
@@ -33,7 +36,7 @@ class AllCategoriesFragment : Fragment() {
         Handler(Looper.myLooper()!!).postDelayed({
 
             loadCategory()
-        },600)
+        }, 600)
 
         binding.swiperefresh.setOnRefreshListener {
             binding.rv.visibility = View.GONE
@@ -64,6 +67,7 @@ class AllCategoriesFragment : Fragment() {
                     binding.tvInternet.visibility = View.GONE
                     dialog.dismiss()
 
+
                     binding.swiperefresh.isRefreshing = false
                     binding.rv.adapter =
                         CategoryAdapter(it.data!!, object : CategoryAdapter.OnClick {
@@ -72,11 +76,17 @@ class AllCategoriesFragment : Fragment() {
                                 imageView: ImageView,
                                 star: ImageView,
                                 textView: TextView,
-                                ball: TextView
+                                ball: TextView,
+                                name: String
                             ) {
-                                findNavController().popBackStack()
-                                MySharedPreference.typeData = pos
-                                MySharedPreference.isCategory = true
+                                val bundle = Bundle()
+                                bundle.putString("burgerName", name)
+
+                                findNavController().navigate(
+                                    R.id.categoryFragment,
+                                    bundle, setAnimation
+                                        ().build()
+                                )
                             }
                         })
 
@@ -106,12 +116,20 @@ class AllCategoriesFragment : Fragment() {
     private fun setProgress() {
         dialog = AlertDialog.Builder(binding.root.context).create()
         val view = LayoutInflater.from(binding.root.context)
-            .inflate(com.aladdin.foodapp.R.layout.custom_progress, null, false)
+            .inflate(R.layout.custom_progress, null, false)
         dialog.setView(view)
         dialog.setContentView(view)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+    private fun setAnimation(): NavOptions.Builder {
+        return NavOptions.Builder()
+            .setEnterAnim(R.anim.exit_anim)
+            .setExitAnim(R.anim.pop_enter_anim)
+            .setPopEnterAnim(R.anim.enter_anim)
+            .setPopExitAnim(R.anim.pop_exit_anim)
     }
 
     override fun onDestroyView() {

@@ -1,12 +1,16 @@
 package com.aladdin.foodapp.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.aladdin.foodapp.R
 import com.aladdin.foodapp.databinding.ItemBurgerBinding
 import com.aladdin.foodapp.models.FoodHome
 import com.aladdin.foodapp.room.AppDatabase
@@ -33,6 +37,10 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
         @SuppressLint("SetTextI18n", "ResourceAsColor")
         fun onBind(item: FoodHome) {
 
+
+
+
+
             var a = 0
 
             binding.name.text = item.name
@@ -40,6 +48,19 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
             binding.price.text = item.price
             // binding.subText.text = item.subTitle
             Picasso.get().load(item.image).into(binding.image)
+
+            if (item.visible == "g"){
+                binding.name.paintFlags = binding.name.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }else{
+                binding.name.setTypeface(null, Typeface.BOLD)
+            }
+
+            if (item.name.contains("combo") || item.name.contains("Combo")  ){
+                binding.newImage.visibility = View.VISIBLE
+            }else{
+                binding.newImage.visibility = View.GONE
+            }
+
 
             binding.addBasket.setOnClickListener {
                 a++
@@ -97,7 +118,8 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
                     binding.image,
                     binding.starIcon,
                     binding.name,
-                    binding.ball
+                    binding.ball,
+                    item
                 )
             }
 
@@ -116,6 +138,9 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
     }
 
     override fun onBindViewHolder(holder: ViewH, position: Int) {
+
+        val loadAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.recy_anim)
+        holder.itemView.startAnimation(loadAnimation)
         holder.onBind(list[position])
     }
 
@@ -141,7 +166,8 @@ class MyAdapter(private var list: List<FoodHome>, val onClick: OnClick) :
             imageView: ImageView,
             star: ImageView,
             textView: TextView,
-            ball: TextView
+            ball: TextView,
+            burger:FoodHome
         )
     }
 

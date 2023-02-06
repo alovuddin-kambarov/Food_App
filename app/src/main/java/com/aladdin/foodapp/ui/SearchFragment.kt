@@ -53,17 +53,18 @@ class SearchFragment : Fragment() {
                             imageView: ImageView,
                             star: ImageView,
                             textView: TextView,
-                            ball: TextView
+                            ball: TextView,
+                            burger:FoodHome
                         ) {
 
                             val detailIntent =
                                 Intent(
                                     requireActivity(),
                                     AboutBurgerActivity::class.java
-                                ).putExtra("burger", it.data[pos])
+                                ).putExtra("burger", burger)
                             val imageViewPair =
                                 androidx.core.util.Pair(imageView as View, "small")
-                            val starPair = androidx.core.util.Pair(star as View, "star_icon")
+                          //  val starPair = androidx.core.util.Pair(star as View, "star_icon")
                             val ballPair = androidx.core.util.Pair(star as View, "ball")
 
                             val textViewPair =
@@ -74,7 +75,7 @@ class SearchFragment : Fragment() {
                             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                                 requireActivity(),
                                 imageViewPair,
-                                starPair,
+                                //starPair,
                                 ballPair
                             )
                             //detailIntent.putExtra(TestActivity.DATA, item)

@@ -114,6 +114,7 @@
 
                     <ImageView
                         android:layout_width="@dimen/_17sdp"
+                        android:visibility="gone"
                         android:layout_height="@dimen/_17sdp"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:src="@drawable/ic_star"
@@ -123,6 +124,7 @@
 
                         android:id="@+id/ball"
                         android:layout_width="wrap_content"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_20sdp"
                         android:text="4.8"
@@ -341,6 +343,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/des"
                 android:layout_marginLeft="@dimen/_17sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"

@@ -24,7 +24,7 @@ import com.aladdin.foodapp.utils.MyData
 import com.aladdin.foodapp.utils.MySharedPreference
 import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.vicmikhailau.maskededittext.MaskedEditText
@@ -33,14 +33,12 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
-
 class DeliveryFragment : Fragment() {
 
-
     private var _binding: FragmentDeliveryBinding? = null
+    private val binding get() = _binding!!
     private lateinit var dialogP: AlertDialog
     private lateinit var viewModel: ViewModel
-    private val binding get() = _binding!!
     private lateinit var json: JsonElement
     private var setPrice = 0
     private var allPrice = 0
@@ -173,7 +171,6 @@ class DeliveryFragment : Fragment() {
             val view3 = LayoutInflater.from(binding.root.context)
                 .inflate(R.layout.check_out_dialog, null, false)
 
-
             dialog3.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog3.setView(view3)
             dialog3.setContentView(view3)
@@ -195,9 +192,16 @@ class DeliveryFragment : Fragment() {
 
                             if (a == 0) {
                                 dialogP.cancel()
-                                val db = FirebaseDatabase.getInstance().getReference("foods")
-                                db.child("sys").setValue(System.currentTimeMillis())
 
+                                val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+                                val user: MutableMap<String, Any> = HashMap()
+                                user["azizbek"] = System.currentTimeMillis().toString()
+                                db.collection("azizbek").document("azizbek").update(user)
+
+
+                                /*  val db = FirebaseDatabase.getInstance().getReference("foods")
+
+  */
                                 view2.findViewById<TextView>(R.id.tv).text =
                                     "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
                                 view2.findViewById<LottieAnimationView>(R.id.animationViews)
@@ -218,11 +222,18 @@ class DeliveryFragment : Fragment() {
                             allPrice = 0
                         } else {
                             dialogP.cancel()
-                            Toast.makeText(
-                                binding.root.context,
-                                "Nimadur xato :(",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            dialog2.cancel()
+                            dialog2.setOnShowListener {
+                                dialogP.cancel()
+                            }
+                            view2.findViewById<TextView>(R.id.tv).text =
+                                "Bu taom yoki mahsulot qolmagan. U yana qayta tayyorlanganidan keyin, buni buyurtma berolishingiz mumkin!"
+                            view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                                .setAnimation(R.raw.cooking)
+                            if (a == 0) {
+                                dialog2.show()
+                            }
+                            a++
                         }
 
                         Log.d("nega ", it.data.toString())
@@ -236,8 +247,8 @@ class DeliveryFragment : Fragment() {
                 }
                 Status.ERROR -> {
 
-                    dialog2.cancel()
                     dialogP.cancel()
+                    dialog2.cancel()
                     dialog2.setOnShowListener {
                         dialogP.cancel()
                     }
@@ -313,7 +324,6 @@ class DeliveryFragment : Fragment() {
         phoneNumber = phoneNumber.replace("-", "", true)
         return phoneNumber
     }
-
     private fun setProgress() {
         dialogP = AlertDialog.Builder(binding.root.context).create()
         val view = LayoutInflater.from(binding.root.context)

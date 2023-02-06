@@ -8,5 +8,6 @@ data class OrderReq(
     val price: String,
     val size: String,
     val vaqt: String,
-    val image: String
+    val image: String,
+    val processing:String
 )

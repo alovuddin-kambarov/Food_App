@@ -4,10 +4,14 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.IntentSender
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.transition.Transition
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -30,7 +34,10 @@ import com.aladdin.foodapp.room.AppDatabase
 import com.aladdin.foodapp.utils.MySharedPreference
 import com.aladdin.foodapp.utils.Status
 import com.aladdin.foodapp.viewmodel.ViewModel
-import com.google.firebase.database.FirebaseDatabase
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.vicmikhailau.maskededittext.MaskedEditText
@@ -51,7 +58,8 @@ class AboutBurgerActivity : AppCompatActivity() {
     private var isLiked = false
     private lateinit var viewModel: ViewModel
     lateinit var binding: ActivityAboutBurgerBinding
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +69,7 @@ class AboutBurgerActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
         burger = intent.getSerializableExtra("burger") as FoodHome
+
         burgerPrice = burger.price.toInt()
         Picasso.get().load(burger.image).into(binding.image)
         binding.burgerName.text = burger.name
@@ -68,13 +77,21 @@ class AboutBurgerActivity : AppCompatActivity() {
             burger.price + " so'm"
         )
 
-        burger.count = 1
+        binding.des.text = burger.description
+
 
         setProgress()
         closeKeyboard()
 
-
         nothing()
+
+
+
+        if (burger.visible == "g"){
+            binding.burgerName.paintFlags = binding.burgerName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }else{
+            binding.burgerName.setTypeface(null, Typeface.BOLD)
+        }
 
 
         binding.back.setOnClickListener {
@@ -143,6 +160,7 @@ class AboutBurgerActivity : AppCompatActivity() {
 
         var a = 0
 
+        burger.count = binding.count.getText().toString().toInt()
         val arrayList = ArrayList<FoodHome>()
         arrayList.add(burger)
 
@@ -153,7 +171,7 @@ class AboutBurgerActivity : AppCompatActivity() {
             RequestBody.create(MediaType.parse("multipart/form-data"), toString)
 
         viewModel.getFoods(
-            binding.root.context,create
+            binding.root.context, create
         ).observe(this) {
 
             val dialog2 = AlertDialog.Builder(binding.root.context).create()
@@ -169,6 +187,7 @@ class AboutBurgerActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
 
                     dialogP.cancel()
+                    Log.d("asasasasas", it!!.data!!.ok.toString())
                     if (it!!.data!!.ok!!) {
                         view2.findViewById<TextView>(R.id.tv).text =
                             "Buyurtma berildi!\nSiz bilan aloqaga chiqamiz"
@@ -177,26 +196,41 @@ class AboutBurgerActivity : AppCompatActivity() {
 
 
                         if (a == 0) {
-                            val db = FirebaseDatabase.getInstance().getReference("foods")
-                            db.child("sys").setValue(System.currentTimeMillis())
+                            /*      val db = FirebaseDatabase.getInstance().getReference("foods")
+                                  db.child("sys").setValue(System.currentTimeMillis())*/
                             dialog2.show()
 
+                            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+                            val user: MutableMap<String, Any> = HashMap()
+                            user["azizbek"] = System.currentTimeMillis().toString()
+                            db.collection("azizbek").document("azizbek").update(user)
                             dialog2.setOnShowListener {
                                 dialogP.cancel()
                             }
+
                         }
                         a++
-
 
 
                         AppDatabase.getInstants(binding.root.context).dao().deleteAll()
 
                     } else {
-                        Toast.makeText(
-                            binding.root.context,
-                            "Something is wrong!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        dialogP.cancel()
+                        dialog2.cancel()
+                        dialog2.setOnShowListener {
+                            dialogP.cancel()
+                        }
+                        view2.findViewById<TextView>(R.id.tv).text =
+                            "Bu taom yoki mahsulot qolmagan. U yana qayta tayyorlanganidan keyin, buni buyurtma berolishingiz mumkin!"
+                        view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                            .setAnimation(R.raw.cooking)
+                        view2.findViewById<LottieAnimationView>(R.id.animationViews)
+                        if (a == 0) {
+                            dialog2.show()
+                        }
+                        a++
+
+
                     }
 
 
@@ -332,11 +366,6 @@ class AboutBurgerActivity : AppCompatActivity() {
         })
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        MySharedPreference.isCategory = false
-    }
-
     private fun closeKeyboard() {
 
         val inputMethodManager =
@@ -354,4 +383,58 @@ class AboutBurgerActivity : AppCompatActivity() {
         dialogP.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialogP.setCancelable(false)
     }
+
+
+    private fun turnOnGPS() {
+
+        locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 2000
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+
+        val result = LocationServices.getSettingsClient(binding.root.context)
+            .checkLocationSettings(builder.build())
+
+
+
+        result.addOnCompleteListener { task ->
+            try {
+                task.getResult(ApiException::class.java)
+
+
+            } catch (e: ApiException) {
+
+                when (e.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
+
+                        try {
+
+                            val resolvableApiException = e as ResolvableApiException
+                            resolvableApiException.startResolutionForResult(
+                                this,
+                                10001
+                            )
+
+
+                        } catch (e: IntentSender.SendIntentException) {
+                            e.printStackTrace()
+                        }
+
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+
+                        //Device does not have location
+                    }
+                }
+            }
+        }
+
+
+    }
+
+
+
 }
